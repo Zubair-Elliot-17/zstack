@@ -8,7 +8,7 @@ description: zstack stage 6. Ship the change — gstack /ship to open the PR, th
 **Thesis projects** (`Type: thesis` in STATE.md): follow the Ship row and the rules in `~/.claude/skills/z/THESIS.md` instead of the steps below.
 
 1. `Autonomy: guided`: ask the user before pushing. `full`: pushing the feature branch and opening the PR is pre-approved (never main). Then run gstack `/ship` (sync main, tests, docs check, push, open PR). Follow the user's commit rules (no Claude attribution).
-   - Before /ship, check `gstack-learnings-search --type pitfall` for known ship blockers in this repo.
+   - Before /ship, check `gstack-learnings-search --type pitfall` for known ship blockers in this repo. If a pitfall says /ship is blocked, try /ship anyway once per sprint; bypass only if it really blocks, and then do its plan-completion step by hand (each approved criterion with its result in the PR body).
    - /ship's plan completion audit can't see `.claude/team/` and silently skips with "no plan". Publish the approved plan where it looks: `eval "$(~/.claude/skills/gstack/bin/gstack-slug)"; { echo "Branch: $BRANCH"; cat .claude/team/plan-<milestone>.approved.md; } > ~/.gstack/projects/$SLUG/zstack-plan-$BRANCH.md`, then pick it at /ship's plan question.
    - **Triage /ship findings once**, before any fix. Fix now: correctness, data loss, security or concurrency. Everything else goes to `TODOS.md` by default; the user can promote items.
    - Fix-now items go to the `implementer` (not the lead or /ship's auto-fix), each with a red-first regression test; the `reviewer` then re-checks only the fix diff.

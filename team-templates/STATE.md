@@ -7,6 +7,7 @@ Lane: <sprint | quick>
 Mode: <Solo | Pipeline | Team>
 Stage: <think | plan | build | review | test | ship | reflect | iterate>
 Branch / PR: <branch, open PR #s, CI status>
+Running: <role @ SHA since HH:MM, ...> or none
 Live: <URL, or none>
 Previous sprint: <STATE-<milestone>.md, or none>
 

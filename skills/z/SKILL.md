@@ -20,6 +20,8 @@ zstack is the user's own sprint, built on their agent team (`~/.claude/agents/`)
 4. Small one-off tasks don't need zstack; say so and just do them (Solo mode).
 
 ## Rules for every stage
+- **Running roles.** When you launch a role in the background, add it to STATE.md `Running:` before doing anything else; remove it when its result arrives. While `Running:` names a tester, reviewer or auditor, don't edit tracked files in that checkout. After /clear or a resume, trust `Running:` over memory (ask the user to check `/tasks` if unsure).
+- Long test runs go under `caffeinate -i`.
 - **Checkpoint** (STATE.md + role logs + local WIP commit, see CLAUDE.md "# Projects") when a stage or big task ends, every 30 minutes, or when the user stops.
 - **Autonomy.** `full`: decide and keep going. Take the recommended option on open questions, including the questions gstack skills ask (answer them yourself, don't relay them), log each in STATE.md Decisions with a one-line why, and show the user finished results. Stop only for: merging (the user merges; auto mode blocks it), deploying to production for the first time, spending money, publishing real people's or companies' material, or a change of direction the user hasn't asked for. `guided`: the user approves direction, the plan, and every push.
 - **Run it yourself.** Never hand the user a command you can run. Only hand over what the guard blocks (merge: give the PR link) or what needs their login or credentials (suggest `! <command>`).
