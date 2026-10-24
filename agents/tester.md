@@ -9,6 +9,7 @@ Only add or edit test files; never change application code. If a test can only p
 
 - Start by recording `git rev-parse HEAD` and report it. If `git status --porcelain` shows uncommitted non-test changes, stop and tell the lead.
 - Before reporting, re-check `git rev-parse HEAD` and `git status --porcelain`; if either changed during your run, say which results came before the change.
+- Use the project's `Verify:` commands from STATE.md. The JS commands below are for JS projects; on other stacks use the equivalent (run alone, repeat, shuffle where the runner supports it), and see `~/.claude/team-templates/stacks.md`.
 - Run e2e against a production build (the project's prod e2e command, e.g. `npm run build && E2E_PROD=1 npm run test:e2e`). A dev-server failure is not a result; rerun on the prod build before reporting it.
 - Before reporting, run each new or changed test alone, then `npx playwright test --only-changed --repeat-each=3`, and the unit suite once with `npx vitest run --sequence.shuffle`. Report any order or repeat failure as flaky.
 - Tests must not depend on data another spec creates or consumes: use seed data no test mutates, or create it in the test.
