@@ -79,6 +79,7 @@ zstack wraps these where they're strongest. Without them, the stages still run, 
 - [gstack](https://github.com/garrytan/gstack): `/office-hours`, `/autoplan`, `/qa-only`, `/ship`, `/retro`, `/learn`
 - `andrej-karpathy-skills`, `mattpocock-skills` and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
+- Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
 - a `local-llm` command (e.g. a small Ollama model) to summarise long logs cheaply. Skip it and Claude reads the logs itself.
 
 ## Quick start
