@@ -11,7 +11,7 @@ Most of last week's work was this loop (Tablecloth PRs #1–#9, ROND #1–#7, Ve
 
 1. **Sync** (`/z` step 1 does this on resume): `git fetch`, record PRs merged since STATE.md (`gh pr list --state merged --limit 10`), `git switch main && git pull`, delete merged local branches and worktrees. Read the user's own commits first so you never redo their work.
 2. **Scope in one line** in STATE.md Tasks: what changes, what must not. If the request reads as both a small and a large job, take the reading the user's words support and state it in your reply.
-3. **Branch** from main (`fix/<slug>`, `feat/<slug>`). If an earlier PR is still open, branch from main when independent, or stack on it and say so in the PR body; use a worktree (`../<repo>-<slug>`) when the main checkout holds unmerged work.
+3. **Branch** from main (`fix/<slug>`, `feat/<slug>`). If an earlier PR is still open, branch from main when independent, or stack on it (see z-build's stacking rule) and say so in the PR body; use a worktree (`../<repo>-<slug>`) when the main checkout holds unmerged work.
 4. **Change it.** Apply the user's feedback memories that fit (e.g. nav-jump pattern). Bug: find the root cause first (gstack `/investigate` if it resists a quick fix). Add or update a test when the project has tests.
 5. **Verify yourself** and keep the evidence (command + result, or screenshot paths):
    - project checks: typecheck, lint, tests, build;
