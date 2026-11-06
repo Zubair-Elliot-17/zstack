@@ -1,6 +1,6 @@
 # macui: synthetic UI QA for native Mac apps (CLT only)
 
-The tools behind z-test's `ui` rows. Build into the session scratchpad with `build.sh <scratchpad>`.
+The tools behind z-test's `ui` rows. Build with `build.sh` (default `~/.cache/macui`, so it survives /clear; rebuilds only changed tools).
 The terminal needs Accessibility (to post events and read the AX tree); the user grants it, never the agent.
 
 - `ev <cmd> …`: posts CGEvents. Commands: `move x y`, `down x y`, `up x y`, `drag x y steps`, `click x y`,
@@ -13,5 +13,5 @@ The terminal needs Accessibility (to post events and read the AX tree); the user
 - `preflight.sh <fixtures>`: Stage Manager off, no full-screen apps, fixtures outside iCloud folders.
 - `repeat.sh <n> <gesture> <check>`: run a gesture n times and count the bad outcome.
 
-Rules: assert on effects, not on the press (frontmost app, AXWindow count, file or log line); a press that returns OK proves nothing about activation. Activate the target app in the same step as the gesture (focus moves between calls); assert on files and logs, keep one
+Rules: a negative row ("X does not happen") counts only if the same gesture with one setting flipped shows X in the same run; re-locate targets right before each gesture. Logs: `/usr/bin/log stream --level info` (zsh's `log` is a builtin; `log show` needs `--info`). Assert on effects, not on the press (frontmost app, AXWindow count, file or log line); a press that returns OK proves nothing about activation. Activate the target app in the same step as the gesture (focus moves between calls); assert on files and logs, keep one
 screenshot per row as evidence; an app's success path may log nothing, so pair "no error line" with a visible or file result.
