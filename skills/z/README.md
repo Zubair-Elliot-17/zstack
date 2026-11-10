@@ -12,11 +12,11 @@ STATE.md `Autonomy: full` (default) means the lead decides, answers gstack's que
 | Think | researcher | `/office-hours` | research notes, design doc path |
 | Plan | planner | `/autoplan` or `/plan-eng-review` (+ `/plan-design-review` for UI) | spec + task list in STATE.md |
 | Build | implementer, or frontend-dev + backend-dev (Team mode) | `mattpocock-skills:tdd`, `/investigate` | code, role logs |
-| Review | reviewer + security-auditor + tester (parallel) | `gstack-gate-diff`; `/review` (report only) or `/cso` on request | findings → implementer fixes |
+| Review | reviewer + security-auditor + tester (parallel), then local-review + judge | `gstack-gate-diff`; `/review` (report only) or `/cso` on request | findings → implementer fixes |
 | Test | tester | `/qa-only` (report only); `z-test/shots.py` (1440/390/320, Chromium + WebKit) | QA report, screenshots |
 | Ship | lead | `/ship`, then `/land-and-deploy`, `/canary` on request | PR, deploy check |
 | Reflect | researcher | `/retro`, `/learn` | team-improvements.md, archived STATE-<m>.md |
-| Iterate (quick lane) | lead, + reviewer if non-trivial | `/investigate` for bugs; `z-test/shots.py` | one PR per change |
+| Iterate (quick lane) | lead, + reviewer if non-trivial, then local-review + judge | `/investigate` for bugs; `z-test/shots.py` | one PR per change |
 
 ## Files
 - `.claude/team/STATE.md` — single source of truth for where we are (lead only).

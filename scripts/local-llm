@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Send an easy task to the local Ollama model; prints only the answer (capped at LOCAL_LLM_MAX_TOKENS, default 1024,
+# because an uncapped small model can loop forever and block the queue).
+# Usage: local-llm [--url URL | --yt URL] "instruction" [file ...]   or   cmd | local-llm "instruction"
+# Long input is split into chunks, noted per chunk, then answered from the notes.
+set -euo pipefail
+
+model="${LOCAL_LLM_MODEL:-qwen3.5:4b}"
+ctx="${LOCAL_LLM_CTX:-32768}"
+usage='usage: local-llm [--url URL | --yt URL] "instruction" [file ...]  (or pipe input)'
+
+source_kind=""; source_url=""
+case "${1:-}" in
+  --url|--yt) source_kind="$1"; source_url="${2:?$usage}"; shift 2 ;;
+esac
+[ $# -ge 1 ] || { echo "$usage" >&2; exit 2; }
+instruction="$1"; shift
+
+command -v jq >/dev/null || { echo "local-llm: jq is required" >&2; exit 3; }
+tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+
+if [ "$source_kind" = "--url" ]; then
+  command -v textutil >/dev/null || { echo "local-llm: --url needs macOS textutil" >&2; exit 3; }
+  curl -sSfL -A "Mozilla/5.0" "$source_url" | textutil -convert txt -stdin -stdout -format html > "$tmp/in"
+elif [ "$source_kind" = "--yt" ]; then
+  command -v yt-dlp >/dev/null || { echo "local-llm: --yt needs yt-dlp" >&2; exit 3; }
+  yt-dlp -q --no-warnings --skip-download --write-subs --write-auto-subs \
+    --sub-langs "en,en-orig,en-US,en-GB" --sub-format vtt -o "$tmp/yt" "$source_url" >&2 || true
+  vtt="$(ls "$tmp"/yt*.vtt 2>/dev/null | head -1 || true)"
+  [ -n "$vtt" ] || { echo "local-llm: no English transcript for this video" >&2; exit 4; }
+  # Drop VTT headers, timestamps and inline tags; auto-subs repeat lines, so dedupe.
+  { grep -vE '^(WEBVTT|Kind:|Language:|[0-9:.]+ -->|\s*$)' "$vtt" || true; } | sed 's/<[^>]*>//g' | awk '!seen[$0]++' > "$tmp/in"
+elif [ $# -gt 0 ]; then
+  for f in "$@"; do printf '\n=== %s ===\n' "$f"; cat "$f"; done > "$tmp/in"
+elif [ ! -t 0 ]; then
+  cat > "$tmp/in"
+else
+  : > "$tmp/in"
+fi
+
+ask() {
+  local n="${LOCAL_LLM_MAX_TOKENS:-1024}" r
+  r="$(jq -n --arg m "$model" --arg p "$1" --argjson c "$ctx" --argjson n "$n" \
+    '{model:$m, prompt:$p, stream:false, think:false, options:{num_ctx:$c, num_predict:$n, temperature:0.2}}' |
+    curl -sSf -m "${LOCAL_LLM_TIMEOUT:-300}" http://localhost:11434/api/generate -d @-)" || return
+  jq -r '.response' <<<"$r" | sed '/<think>/,/<\/think>/d'
+  [ "$(jq -r '.done_reason' <<<"$r")" != length ] || echo "local-llm: answer cut at $n tokens (raise LOCAL_LLM_MAX_TOKENS)" >&2
+}
+
+# Code runs ~3 bytes per token; leave room for the prompt and the answer.
+max_chars=$(( ctx * 2 ))
+if [ "$(wc -c < "$tmp/in")" -le "$max_chars" ]; then
+  input="$(cat "$tmp/in")"
+  if [ -n "$input" ]; then ask "$instruction"$'\n\nInput:\n'"$input"; else ask "$instruction"; fi
+  exit
+fi
+
+# Chunk on line ends so no character is cut; fold first breaks any single line too long for a chunk.
+LC_ALL=en_US.UTF-8 fold -w $(( max_chars / 4 )) "$tmp/in" |
+  LC_ALL=C awk -v max="$max_chars" -v pre="$tmp/chunk." \
+    '{ l = length($0) + 1; if (s && s + l > max) { close(f); n++; s = 0 } f = sprintf("%s%05d", pre, n); print > f; s += l }'
+notes=""
+for c in "$tmp"/chunk.*; do
+  notes+="$(ask "Write brief notes on everything in this text relevant to the task: $instruction"$'\n\nText:\n'"$(cat "$c")")"$'\n\n'
+done
+# shortcut: the notes are not capped, so a source of many hundreds of chunks can overflow the context; summarise notes in rounds if that ever matters.
+ask "$instruction"$'\n\nInput (notes taken from a long source, in order):\n'"$notes"

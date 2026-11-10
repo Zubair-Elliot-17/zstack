@@ -43,7 +43,7 @@ There's also a **thesis mode** (`Type: thesis` in STATE.md) that runs the same s
 
 ## The team
 
-Eight roles in [`agents/`](agents/):
+Eleven roles in [`agents/`](agents/):
 
 | Role | Job |
 |---|---|
@@ -54,6 +54,24 @@ Eight roles in [`agents/`](agents/):
 | `security-auditor` | Auth, input handling, secrets, injection. Findings tagged P1–P3. |
 | `tester` | Checks the change against the acceptance criteria and writes missing tests. |
 | `researcher` | Tech choices, "is there a better way", and periodic reviews of the team itself. |
+| `scout` | Finds where things are. Read-only, returns `file:line` only. Runs on Haiku. |
+| `local-review` | Cheap first pass on the branch diff by a local Ollama model (code files only; docs go straight to the judge). Runs on Haiku. |
+| `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. A hook (`hooks/git-readonly.sh`) limits its Bash to `git diff`, `status`, `log` and `show`. |
+
+Before a PR is opened, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. The four roles that write code preload [Ponytail](https://github.com/DietrichGebert/ponytail), the lead follows it by rule, and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
+
+### Model tiers (optional)
+
+`scout`, `local-review` and `judge` pin their own model. The other eight roles use `model: inherit`, so they follow your main session. To plan on Opus, build on Sonnet and send any role without a model to Haiku, add this to `~/.claude/settings.json`:
+
+```json
+{
+  "model": "opusplan",
+  "env": { "CLAUDE_CODE_SUBAGENT_MODEL": "haiku" }
+}
+```
+
+A role's own `model:` line wins over that variable (Claude Code v2.1.251 or later), so give any role you add an explicit `model:`.
 
 The lead (your main Claude Code session) picks the lightest mode that fits: **Solo** for small tasks, **Pipeline** (planner → implementer → reviewers) for most features, or **Team** (parallel teammates) when the work splits cleanly by file.
 
@@ -71,16 +89,17 @@ The installer copies everything into `~/.claude`. If a file with the same name a
 
 - **`team-resume.sh`** (SessionStart) loads the saved STATE.md and the latest role-log entries, so a new session picks up where the last one stopped.
 - **`zstack-guard.sh`** (UserPromptSubmit + Stop) nudges you into `/z` for projects under `~/claude-work/projects/` and asks for a checkpoint when STATE.md is more than 30 minutes old and files have changed.
+- **`git-readonly.sh`** needs no settings entry: the `judge` and `local-review` roles load it from their own frontmatter.
 
 ### Works best with (optional)
 
 zstack wraps these where they're strongest. Without them, the stages still run, and the lead does that step itself:
 
 - [gstack](https://github.com/garrytan/gstack): `/office-hours`, `/autoplan`, `/qa-only`, `/ship`, `/retro`, `/learn`
-- `andrej-karpathy-skills`, `mattpocock-skills` and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
+- `andrej-karpathy-skills`, `mattpocock-skills`, [`ponytail`](https://github.com/DietrichGebert/ponytail) (preloaded by every role that writes code) and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
 - Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
-- a `local-llm` command (e.g. a small Ollama model) to summarise long logs cheaply. Skip it and Claude reads the logs itself.
+- [Ollama](https://ollama.com) for the local model. Download the two models zstack uses: `ollama pull qwen3.5:9b` (first-pass code review in `scripts/ollama-review.sh`; set `OLLAMA_REVIEW_MODEL` to use another model) and `ollama pull qwen3.5:4b` (log and page summaries in `scripts/local-llm`). Then put the helper on your PATH: `mkdir -p ~/.local/bin && ln -s ~/.claude/scripts/local-llm ~/.local/bin/local-llm`. It needs `jq` and `curl`; `--url` uses macOS `textutil` and `--yt` needs `yt-dlp`. Without Ollama or the model, `local-review` prints why it skipped and you go straight to `judge`, and Claude reads long logs itself.
 
 ## Quick start
 
@@ -94,7 +113,7 @@ claude
 
 ## Make it yours
 
-Every stage is one short `SKILL.md` under `skills/z-*`, and every role is one Markdown file under `agents/`. To swap a gstack step for your own, edit that stage so it does the work itself. To change how strict a reviewer is, edit `agents/reviewer.md`. **Forking is encouraged.** The design notes are in [`skills/z/README.md`](skills/z/README.md).
+Every stage is one short `SKILL.md` under `skills/z-*`, and every role is one Markdown file under `agents/`. To swap a gstack step for your own, edit that stage so it does the work itself. To change how strict a reviewer is, edit `agents/reviewer.md`. If you edit the installed copies in `~/.claude`, `./sync.sh` copies them back into your clone and `./sync.sh --check` reports any drift. **Forking is encouraged.** The design notes are in [`skills/z/README.md`](skills/z/README.md).
 
 ## Contributing
 

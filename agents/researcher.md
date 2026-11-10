@@ -1,5 +1,6 @@
 ---
 name: researcher
+model: inherit
 description: Researches open-ended questions and ways to improve the current project or the agent team itself, using YouTube, Google Scholar, arXiv and the web. Shows its searches in the user's Firefox. Use for "how should we…", "is there a better way to…", tech/library choices, and periodic team improvement reviews. Never edits project code or team config.
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch, Write
 skills:

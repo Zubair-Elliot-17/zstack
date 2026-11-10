@@ -3,8 +3,8 @@
 The tools behind z-test's `ui` rows. Build with `build.sh` (default `~/.cache/macui`, so it survives /clear; rebuilds only changed tools).
 The terminal needs Accessibility (to post events and read the AX tree); the user grants it, never the agent.
 
-- `ev <cmd> …`: posts CGEvents. Commands: `move x y`, `down x y`, `up x y`, `drag x y steps`, `click x y`,
-  `shift`, `ctrl` (taps), `shiftdown`/`shiftup`, `sleep ms`; several can be chained in one call. Global, top-left coordinates.
+- `ev <cmd> …`: posts CGEvents. Commands: `move x y`, `down x y`, `up x y`, `drag x y steps`, `click x y`, `dclick x y`,
+  `shift`, `ctrl`, `esc` (taps), `shiftdown`/`shiftup`, `sleep ms`; several can be chained in one call. Global, top-left coordinates.
 - `axfind <bundle-id|pid> [x]`: dumps role, label and frame of every AX element; find targets here, never hard-code coordinates.
 - `axpress <bundle-id> <menu item>`: opens a menu-bar extra and presses the item. AX press: doesn't activate the app.
 - `menu.sh <bundle-id> [item]`: real-clicks the menu-bar extra (activates the app), then the named item; exit 1 if not found.

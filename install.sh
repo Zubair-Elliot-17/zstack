@@ -4,7 +4,7 @@ set -euo pipefail
 src="$(cd "$(dirname "$0")" && pwd)"
 dest="${CLAUDE_HOME:-$HOME/.claude}"
 
-for dir in skills agents team-templates hooks; do
+for dir in skills agents team-templates hooks scripts; do
   (cd "$src/$dir" && find . -type f) | while read -r f; do
     target="$dest/$dir/${f#./}"
     mkdir -p "$(dirname "$target")"
@@ -12,7 +12,7 @@ for dir in skills agents team-templates hooks; do
     cp "$src/$dir/$f" "$target"
   done
 done
-chmod +x "$dest"/hooks/zstack-guard.sh "$dest"/hooks/team-resume.sh
+chmod +x "$dest"/hooks/zstack-guard.sh "$dest"/hooks/team-resume.sh "$dest"/hooks/git-readonly.sh "$dest"/scripts/ollama-review.sh "$dest"/scripts/local-llm
 
 cat <<MSG
 zstack installed into $dest.

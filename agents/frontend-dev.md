@@ -1,7 +1,9 @@
 ---
 name: frontend-dev
+model: inherit
 description: Team-mode teammate that owns the UI files (components, pages, styles, client state). Use when a project splits cleanly into frontend and backend work done in parallel.
 skills:
+  - ponytail:ponytail
   - andrej-karpathy-skills:karpathy-guidelines
   - react-patterns
 ---

@@ -1,7 +1,9 @@
 ---
 name: backend-dev
+model: inherit
 description: Team-mode teammate that owns server files (API routes, data access, schema, migrations). Use when a project splits cleanly into frontend and backend work done in parallel.
 skills:
+  - ponytail:ponytail
   - andrej-karpathy-skills:karpathy-guidelines
   - api-design
 ---
