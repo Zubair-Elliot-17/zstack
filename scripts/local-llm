@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Send an easy task to the local Ollama model; prints only the answer.
+# Send an easy task to the local Ollama model; prints only the answer (capped at LOCAL_LLM_MAX_TOKENS, default 1024,
+# because an uncapped small model can loop forever and block the queue).
 # Usage: local-llm [--url URL | --yt URL] "instruction" [file ...]   or   cmd | local-llm "instruction"
 # Long input is split into chunks, noted per chunk, then answered from the notes.
 set -euo pipefail
@@ -38,8 +39,8 @@ else
 fi
 
 ask() {
-  jq -n --arg m "$model" --arg p "$1" --argjson c "$ctx" \
-    '{model:$m, prompt:$p, stream:false, think:false, options:{num_ctx:$c, temperature:0.2}}' |
+  jq -n --arg m "$model" --arg p "$1" --argjson c "$ctx" --argjson n "${LOCAL_LLM_MAX_TOKENS:-1024}" \
+    '{model:$m, prompt:$p, stream:false, think:false, options:{num_ctx:$c, num_predict:$n, temperature:0.2}}' |
     curl -sSf -m "${LOCAL_LLM_TIMEOUT:-300}" http://localhost:11434/api/generate -d @- |
     jq -r '.response' | sed '/<think>/,/<\/think>/d'
 }

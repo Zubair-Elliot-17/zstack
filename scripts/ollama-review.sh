@@ -26,8 +26,11 @@ for f in "$tmp"/f.*; do
   # Prose and generated files are left to the judge.
   case "$name" in *.md|*.mdx|*.lock|*-lock.json|*.svg|*.snap) skipped=$((skipped + 1)); continue ;; esac
   reviewed=$((reviewed + 1))
-  LOCAL_LLM_MODEL="$model" "$(dirname "$0")/local-llm" "$prompt" < "$f" || skip "the model call failed"
+  LOCAL_LLM_MODEL="$model" LOCAL_LLM_MAX_TOKENS=500 "$(dirname "$0")/local-llm" "$prompt" < "$f" > "$tmp/one" ||
+    skip "the model call failed"
+  # Keep only finding lines (the model sometimes thinks aloud), one per file:line, at most 5 per file.
+  { grep -E '^(BUG|TEST|STYLE) ' "$tmp/one" || true; } | awk '!seen[$2]++' | head -5
 done > "$tmp/out"
 [ "$reviewed" -gt 0 ] || { echo "ollama-review: only docs or generated files changed ($skipped), nothing reviewed"; exit 0; }
-grep -vixE '[[:space:]]*no findings\.?[[:space:]]*|[[:space:]]*' "$tmp/out" || echo "no findings"
+[ -s "$tmp/out" ] && cat "$tmp/out" || echo "no findings"
 [ "$skipped" = 0 ] || echo "ollama-review: $skipped docs or generated file(s) not reviewed here; the judge covers them"
