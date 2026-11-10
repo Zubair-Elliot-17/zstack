@@ -26,7 +26,7 @@ elif [ "$source_kind" = "--yt" ]; then
   vtt="$(ls "$tmp"/yt*.vtt 2>/dev/null | head -1 || true)"
   [ -n "$vtt" ] || { echo "local-llm: no English transcript for this video" >&2; exit 4; }
   # Drop VTT headers, timestamps and inline tags; auto-subs repeat lines, so dedupe.
-  { grep -vE '^(WEBVTT|Kind:|Language:|[0-9:.]+ -->|\s*$)' "$vtt" || true; } | sed's/<[^>]*>//g' | awk '!seen[$0]++' > "$tmp/in"
+  { grep -vE '^(WEBVTT|Kind:|Language:|[0-9:.]+ -->|\s*$)' "$vtt" || true; } | sed 's/<[^>]*>//g' | awk '!seen[$0]++' > "$tmp/in"
 elif [ $# -gt 0 ]; then
   for f in "$@"; do printf '\n=== %s ===\n' "$f"; cat "$f"; done > "$tmp/in"
 elif [ ! -t 0 ]; then
@@ -50,9 +50,13 @@ if [ "$(wc -c < "$tmp/in")" -le "$max_chars" ]; then
   exit
 fi
 
-split -b "$max_chars" "$tmp/in" "$tmp/chunk."
+# Chunk on line ends so no character is cut; fold first breaks any single line too long for a chunk.
+LC_ALL=en_US.UTF-8 fold -w $(( max_chars / 4 )) "$tmp/in" |
+  LC_ALL=C awk -v max="$max_chars" -v pre="$tmp/chunk." \
+    '{ l = length($0) + 1; if (s && s + l > max) { close(f); n++; s = 0 } f = sprintf("%s%05d", pre, n); print > f; s += l }'
 notes=""
 for c in "$tmp"/chunk.*; do
   notes+="$(ask "Write brief notes on everything in this text relevant to the task: $instruction"$'\n\nText:\n'"$(cat "$c")")"$'\n\n'
 done
+# shortcut: the notes are not capped, so a source of many hundreds of chunks can overflow the context; summarise notes in rounds if that ever matters.
 ask "$instruction"$'\n\nInput (notes taken from a long source, in order):\n'"$notes"
