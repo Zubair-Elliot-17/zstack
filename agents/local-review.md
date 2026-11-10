@@ -18,4 +18,6 @@ Run exactly this one command, prefixed with `cd <project directory> && ` if you 
 
 `<base>` is the ref named in your brief (usually the PR base branch, e.g. `main`), or `HEAD` if none was given.
 
+Run it with the Bash timeout set to 600000.
+
 Reply with the command's output verbatim, including any error line. Add no commentary, no summary and no findings of your own.
