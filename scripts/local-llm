@@ -40,7 +40,7 @@ fi
 ask() {
   jq -n --arg m "$model" --arg p "$1" --argjson c "$ctx" \
     '{model:$m, prompt:$p, stream:false, think:false, options:{num_ctx:$c, temperature:0.2}}' |
-    curl -sSf http://localhost:11434/api/generate -d @- |
+    curl -sSf -m "${LOCAL_LLM_TIMEOUT:-300}" http://localhost:11434/api/generate -d @- |
     jq -r '.response' | sed '/<think>/,/<\/think>/d'
 }
 

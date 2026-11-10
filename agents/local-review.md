@@ -9,6 +9,7 @@ hooks:
       hooks:
         - type: command
           command: '"$HOME"/.claude/hooks/git-readonly.sh review'
+          onFailure: block
 ---
 
 Run exactly this one command, prefixed with `cd <project directory> && ` if you were given one, and nothing else (a hook blocks any other command):

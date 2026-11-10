@@ -20,11 +20,14 @@ prompt='You are a strict code reviewer reading a git diff of one file. Check eac
 # One call per file, so each finding keeps its file name and hunk line numbers.
 # shortcut: a single file's diff larger than the model context is reviewed from notes; fine for a first pass.
 awk -v pre="$tmp/f." '/^diff --git /{ close(f); n++ } { f = sprintf("%s%05d", pre, n); print > f }' "$tmp/diff"
-reviewed=0
+reviewed=0; skipped=0
 for f in "$tmp"/f.*; do
-  case "$(head -1 "$f")" in *.md|*.mdx|*.txt|*.lock|*-lock.json|*.svg|*.snap) continue ;; esac  # prose and generated files: judge only
+  name="$(head -1 "$f")"; name="${name%\"}"
+  # Prose and generated files are left to the judge.
+  case "$name" in *.md|*.mdx|*.lock|*-lock.json|*.svg|*.snap) skipped=$((skipped + 1)); continue ;; esac
   reviewed=$((reviewed + 1))
   LOCAL_LLM_MODEL="$model" "$(dirname "$0")/local-llm" "$prompt" < "$f" || skip "the model call failed"
 done > "$tmp/out"
-[ "$reviewed" -gt 0 ] || { echo "ollama-review: only docs or generated files changed, nothing reviewed"; exit 0; }
+[ "$reviewed" -gt 0 ] || { echo "ollama-review: only docs or generated files changed ($skipped), nothing reviewed"; exit 0; }
 grep -vixE '[[:space:]]*no findings\.?[[:space:]]*|[[:space:]]*' "$tmp/out" || echo "no findings"
+[ "$skipped" = 0 ] || echo "ollama-review: $skipped docs or generated file(s) not reviewed here; the judge covers them"

@@ -9,11 +9,12 @@ hooks:
       hooks:
         - type: command
           command: '"$HOME"/.claude/hooks/git-readonly.sh'
+          onFailure: block
 ---
 
 Assume the change is wrong and find out why. Read the diff with `git diff --merge-base <base>`, where `<base>` is the ref named in your brief (usually the PR base branch, e.g. `main`) or `HEAD` if none was given, and open surrounding code with Read, Grep and Glob to confirm each suspicion. New untracked files are not in that diff: find them with `git status --short` and read them directly.
 
-Bash is for `git diff`, `git status`, `git log` and `git show` only (one command per call, optionally after `cd <dir> &&`); a hook blocks everything else. Never edit files.
+Bash is for `git diff`, `git status`, `git log` and `git show` only (one command per call, optionally after `cd <dir> &&`); a hook blocks everything else, including quotes and pipes, so use paths without spaces. Never edit files.
 
 Report one line per finding, most severe first:
 
