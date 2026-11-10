@@ -24,13 +24,16 @@ reviewed=0; skipped=0
 for f in "$tmp"/f.*; do
   name="$(head -1 "$f")"; name="${name%\"}"
   # Prose and generated files are left to the judge.
-  case "$name" in *.md|*.mdx|*.lock|*-lock.json|*.svg|*.snap) skipped=$((skipped + 1)); continue ;; esac
+  case "$name" in *.md|*.mdx|*.lock|*-lock.json|*.svg|*.snap|*.icns|*.png|*.rtf) skipped=$((skipped + 1)); continue ;; esac
+  # Big diffs: stop at the budget and leave the rest to the judge, rather than time out with nothing.
+  [ "$SECONDS" -lt "${OLLAMA_REVIEW_BUDGET:-480}" ] || { echo "ollama-review: time budget hit at ${name#diff --git }; later files left to the judge"; break; }
   reviewed=$((reviewed + 1))
   LOCAL_LLM_MODEL="$model" LOCAL_LLM_MAX_TOKENS=500 "$(dirname "$0")/local-llm" "$prompt" < "$f" > "$tmp/one" ||
-    skip "the model call failed"
-  # Keep only finding lines (the model sometimes thinks aloud), one per file:line, at most 5 per file.
-  { grep -E '^(BUG|TEST|STYLE) ' "$tmp/one" || true; } | awk '!seen[$2]++' | head -5
+    { echo "ollama-review: model call failed on ${name#diff --git }; the judge covers it"; continue; }
+  # Keep only finding lines (the model sometimes thinks aloud or adds bullets), one per file:line, at most 5 per file.
+  sed -E 's/^[[:space:]]*([-*]|[0-9]+[.)])?[[:space:]]*\**(BUG|TEST|STYLE)\**:?[[:space:]]+/\2 /' "$tmp/one" |
+    { grep -E '^(BUG|TEST|STYLE) ' || true; } | awk '{ k = ($2 ~ /:/) ? $2 : $0 } !seen[k]++' | head -5
 done > "$tmp/out"
-[ "$reviewed" -gt 0 ] || { echo "ollama-review: only docs or generated files changed ($skipped), nothing reviewed"; exit 0; }
+[ "$reviewed" -gt 0 ] || [ -s "$tmp/out" ] || { echo "ollama-review: only docs or generated files changed ($skipped), nothing reviewed"; exit 0; }
 [ -s "$tmp/out" ] && cat "$tmp/out" || echo "no findings"
 [ "$skipped" = 0 ] || echo "ollama-review: $skipped docs or generated file(s) not reviewed here; the judge covers them"

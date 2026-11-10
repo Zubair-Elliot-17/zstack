@@ -39,10 +39,12 @@ else
 fi
 
 ask() {
-  jq -n --arg m "$model" --arg p "$1" --argjson c "$ctx" --argjson n "${LOCAL_LLM_MAX_TOKENS:-1024}" \
+  local n="${LOCAL_LLM_MAX_TOKENS:-1024}" r
+  r="$(jq -n --arg m "$model" --arg p "$1" --argjson c "$ctx" --argjson n "$n" \
     '{model:$m, prompt:$p, stream:false, think:false, options:{num_ctx:$c, num_predict:$n, temperature:0.2}}' |
-    curl -sSf -m "${LOCAL_LLM_TIMEOUT:-300}" http://localhost:11434/api/generate -d @- |
-    jq -r '.response' | sed '/<think>/,/<\/think>/d'
+    curl -sSf -m "${LOCAL_LLM_TIMEOUT:-300}" http://localhost:11434/api/generate -d @-)" || return
+  jq -r '.response' <<<"$r" | sed '/<think>/,/<\/think>/d'
+  [ "$(jq -r '.done_reason' <<<"$r")" != length ] || echo "local-llm: answer cut at $n tokens (raise LOCAL_LLM_MAX_TOKENS)" >&2
 }
 
 # Code runs ~3 bytes per token; leave room for the prompt and the answer.

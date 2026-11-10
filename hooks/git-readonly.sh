@@ -18,7 +18,7 @@ fi
 
 # Plain characters only, so no quoting trick can hide an option from the checks below.
 [[ "$cmd" =~ ^[A-Za-z0-9_./:=@^~,+%\ \&-]+$ ]] || deny "only letters, digits and _ . / : = @ ^ ~ , + % - are allowed"
-case "$cmd" in *--output*|*--ext-diff*) deny "that git option writes files or runs a program" ;; esac
+case "$cmd" in *--output*|*--ext*|*--no-index*) deny "that git option writes files, runs a program or reads outside the repo" ;; esac
 p='[A-Za-z0-9_./:=@^~,+%-]'
 [[ "$cmd" =~ ^(cd\ $p+\ \&\&\ )?git\ (-C\ $p+\ )?($subs)(\ +$p+)*$ ]] || deny "not a single read-only git command"
 exit 0
