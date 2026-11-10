@@ -12,7 +12,7 @@ for dir in skills agents team-templates hooks scripts; do
     cp "$src/$dir/$f" "$target"
   done
 done
-chmod +x "$dest"/hooks/zstack-guard.sh "$dest"/hooks/team-resume.sh "$dest"/scripts/ollama-review.sh
+chmod +x "$dest"/hooks/zstack-guard.sh "$dest"/hooks/team-resume.sh "$dest"/scripts/ollama-review.sh "$dest"/scripts/local-llm
 
 cat <<MSG
 zstack installed into $dest.

@@ -58,7 +58,7 @@ Eleven roles in [`agents/`](agents/):
 | `local-review` | Cheap first pass on the uncommitted diff by a local Ollama model. Runs on Haiku. |
 | `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. |
 
-Before a commit, run `local-review` first and fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge.
+Before a PR is opened or updated, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. The four roles that write code preload [Ponytail](https://github.com/DietrichGebert/ponytail), the lead follows it by rule, and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
 
 ### Model tiers (optional)
 
@@ -96,10 +96,9 @@ zstack wraps these where they're strongest. Without them, the stages still run, 
 
 - [gstack](https://github.com/garrytan/gstack): `/office-hours`, `/autoplan`, `/qa-only`, `/ship`, `/retro`, `/learn`
 - `andrej-karpathy-skills`, `mattpocock-skills`, [`ponytail`](https://github.com/DietrichGebert/ponytail) (preloaded by every role that writes code) and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
-- [Ollama](https://ollama.com) plus a `local-llm` command on your PATH, for `local-review`. `scripts/ollama-review.sh` uses `qwen3.5:9b`; change the model name in that file to one you have. Without Ollama it prints why it skipped and you go straight to `judge`.
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
 - Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
-- a `local-llm` command (e.g. a small Ollama model) to summarise long logs cheaply. Skip it and Claude reads the logs itself.
+- [Ollama](https://ollama.com) for the local model. Download the two models zstack uses: `ollama pull qwen3.5:9b` (first-pass code review in `scripts/ollama-review.sh`) and `ollama pull qwen3.5:4b` (log and page summaries in `scripts/local-llm`). Then put the helper on your PATH: `mkdir -p ~/.local/bin && ln -s ~/.claude/scripts/local-llm ~/.local/bin/local-llm`. It needs `jq` and `curl`; `--url` uses macOS `textutil` and `--yt` needs `yt-dlp`. Without Ollama, `local-review` prints why it skipped and you go straight to `judge`, and Claude reads long logs itself.
 
 ## Quick start
 

@@ -16,6 +16,6 @@ Most of last week's work was this loop (Tablecloth PRs #1–#9, ROND #1–#7, Ve
 5. **Verify yourself** and keep the evidence (command + result, or screenshot paths):
    - project checks: typecheck, lint, tests, build;
    - UI changes: the `z-test` UI checks (desktop + 390px phone, Chromium + WebKit, every section, 0 console errors), compared with main so untouched sections did not change (the `.vineyard` clash in Tablecloth #8 broke a section nobody touched).
-6. **Self-review.** Read your own diff. More than a few lines of logic, or anything you are unsure about: one `reviewer` agent on the diff (add `security-auditor` for input handling). Fix P1/P2 yourself, log P3s.
+6. **Self-review.** Read your own diff. More than a few lines of logic, or anything you are unsure about: one `reviewer` agent on the diff (add `security-auditor` for input handling). Fix P1/P2 yourself, log P3s. Then the pre-PR review against main (`local-review`, fix the obvious, then `judge`; see `/z` rules).
 7. **PR.** Commit (no Claude attribution), push the branch, open the PR with what changed, why, and how it was verified. Merging stays with the user (auto mode blocks it): give the PR link in one line.
 8. **Don't idle.** If more feedback is queued, start it now (step 3) instead of waiting for the merge. Log each PR in STATE.md Decisions and Tasks; keep `Stage: iterate`.

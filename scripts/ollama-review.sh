@@ -9,5 +9,5 @@ diff="$(cat)"
 curl -sf -m 3 http://localhost:11434/api/tags >/dev/null ||
   { echo "ollama-review: Ollama is not running at localhost:11434 (start it with 'ollama serve'); review skipped" >&2; exit 3; }
 
-printf '%s' "$diff" | LOCAL_LLM_MODEL=qwen3.5:9b local-llm 'You are reviewing a git diff. List only real problems, one line each, in the form "BUG|STYLE|TEST file:line - problem". BUG = likely defect, STYLE = style issue, TEST = missing test. No praise, no summary, no fixes. If there are none, print "no findings".' ||
+printf '%s' "$diff" | LOCAL_LLM_MODEL=qwen3.5:9b "$(dirname "$0")/local-llm" 'You are reviewing a git diff. List only real problems, one line each, in the form "BUG|STYLE|TEST file:line - problem". BUG = likely defect, STYLE = style issue, TEST = missing test. No praise, no summary, no fixes. If there are none, print "no findings".' ||
   { echo "ollama-review: the model call failed; review skipped" >&2; exit 3; }
