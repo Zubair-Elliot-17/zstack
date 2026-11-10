@@ -27,6 +27,20 @@ while i < a.count {
         for s in 1...n { let f = Double(s) / Double(n); post(.leftMouseDragged, p.x + (x - p.x) * f, p.y + (y - p.y) * f); nap(15) }
     case "shift": key(56, true, .maskShift); nap(60); key(56, false, [])
     case "ctrl": key(59, true, .maskControl); nap(60); key(59, false, [])
+    case "esc": // held like a real press (~80 ms), so key-state polls can see it
+        for down in [true, false] {
+            CGEvent(keyboardEventSource: src, virtualKey: 53, keyDown: down)!.post(tap: .cghidEventTap)
+            if down { nap(80) }
+        }
+    case "dclick": // a real double-click (click state 1 then 2), like opening an icon in Finder
+        let x = num(), y = num()
+        for n in [1, 2] {
+            for t in [CGEventType.leftMouseDown, .leftMouseUp] {
+                let e = CGEvent(mouseEventSource: src, mouseType: t, mouseCursorPosition: CGPoint(x: x, y: y), mouseButton: .left)!
+                e.setIntegerValueField(.mouseEventClickState, value: Int64(n)); e.post(tap: .cghidEventTap); nap(30)
+            }
+            nap(80)
+        }
     case "click": let x = num(), y = num(); post(.leftMouseDown, x, y); nap(50); post(.leftMouseUp, x, y)
     case "shiftdown": held = .maskShift; key(56, true, held)
     case "shiftup": held = []; key(56, false, held)
