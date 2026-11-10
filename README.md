@@ -43,7 +43,7 @@ There's also a **thesis mode** (`Type: thesis` in STATE.md) that runs the same s
 
 ## The team
 
-Eight roles in [`agents/`](agents/):
+Eleven roles in [`agents/`](agents/):
 
 | Role | Job |
 |---|---|
@@ -54,6 +54,24 @@ Eight roles in [`agents/`](agents/):
 | `security-auditor` | Auth, input handling, secrets, injection. Findings tagged P1–P3. |
 | `tester` | Checks the change against the acceptance criteria and writes missing tests. |
 | `researcher` | Tech choices, "is there a better way", and periodic reviews of the team itself. |
+| `scout` | Finds where things are. Read-only, returns `file:line` only. Runs on Haiku. |
+| `local-review` | Cheap first pass on the uncommitted diff by a local Ollama model. Runs on Haiku. |
+| `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. |
+
+Before a commit, run `local-review` first and fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge.
+
+### Model tiers (optional)
+
+`scout`, `local-review` and `judge` pin their own model. The other eight roles use `model: inherit`, so they follow your main session. To plan on Opus, build on Sonnet and send any role without a model to Haiku, add this to `~/.claude/settings.json`:
+
+```json
+{
+  "model": "opusplan",
+  "env": { "CLAUDE_CODE_SUBAGENT_MODEL": "haiku" }
+}
+```
+
+A role's own `model:` line wins over that variable (Claude Code v2.1.251 or later), so give any role you add an explicit `model:`.
 
 The lead (your main Claude Code session) picks the lightest mode that fits: **Solo** for small tasks, **Pipeline** (planner → implementer → reviewers) for most features, or **Team** (parallel teammates) when the work splits cleanly by file.
 
@@ -77,7 +95,8 @@ The installer copies everything into `~/.claude`. If a file with the same name a
 zstack wraps these where they're strongest. Without them, the stages still run, and the lead does that step itself:
 
 - [gstack](https://github.com/garrytan/gstack): `/office-hours`, `/autoplan`, `/qa-only`, `/ship`, `/retro`, `/learn`
-- `andrej-karpathy-skills`, `mattpocock-skills` and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
+- `andrej-karpathy-skills`, `mattpocock-skills`, [`ponytail`](https://github.com/DietrichGebert/ponytail) (preloaded by every role that writes code) and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
+- [Ollama](https://ollama.com) plus a `local-llm` command on your PATH, for `local-review`. `scripts/ollama-review.sh` uses `qwen3.5:9b`; change the model name in that file to one you have. Without Ollama it prints why it skipped and you go straight to `judge`.
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
 - Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
 - a `local-llm` command (e.g. a small Ollama model) to summarise long logs cheaply. Skip it and Claude reads the logs itself.

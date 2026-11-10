@@ -1,5 +1,8 @@
 ---
 name: tester
+model: inherit
+skills:
+  - ponytail:ponytail
 maxTurns: 60
 description: Verifies a finished change against the plan's acceptance criteria by running and, where missing, writing tests. Runs in parallel with reviewer and security-auditor.
 ---

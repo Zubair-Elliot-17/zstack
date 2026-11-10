@@ -1,5 +1,6 @@
 ---
 name: security-auditor
+model: inherit
 description: Checks a finished change for security issues (auth, input handling, secrets, injection, API exposure). Read-only; runs in parallel with reviewer and tester.
 tools: Read, Grep, Glob, Bash
 skills:

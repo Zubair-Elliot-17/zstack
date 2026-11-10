@@ -1,7 +1,9 @@
 ---
 name: implementer
+model: inherit
 description: Sole code writer in Pipeline mode. Implements a planned task list sequentially with tests, then fixes findings from reviewers. (In Team mode, frontend-dev and backend-dev write their own files instead.)
 skills:
+  - ponytail:ponytail
   - andrej-karpathy-skills:karpathy-guidelines
   - mattpocock-skills:tdd
 ---

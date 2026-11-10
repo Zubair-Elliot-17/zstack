@@ -1,5 +1,6 @@
 ---
 name: planner
+model: inherit
 description: Turns a feature request or bug into a short spec and an ordered task list before any code is written. Use at the start of non-trivial work. Read-only.
 tools: Read, Grep, Glob, Bash, WebFetch
 skills:

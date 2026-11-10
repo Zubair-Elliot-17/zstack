@@ -1,5 +1,6 @@
 ---
 name: reviewer
+model: inherit
 description: Reviews a finished change for correctness bugs, design and code quality. Read-only; runs in parallel with security-auditor and tester.
 tools: Read, Grep, Glob, Bash
 skills:
