@@ -32,6 +32,15 @@ while i < a.count {
             CGEvent(keyboardEventSource: src, virtualKey: 53, keyDown: down)!.post(tap: .cghidEventTap)
             if down { nap(80) }
         }
+    case "dclick": // a real double-click (click state 1 then 2), like opening an icon in Finder
+        let x = num(), y = num()
+        for n in [1, 2] {
+            for t in [CGEventType.leftMouseDown, .leftMouseUp] {
+                let e = CGEvent(mouseEventSource: src, mouseType: t, mouseCursorPosition: CGPoint(x: x, y: y), mouseButton: .left)!
+                e.setIntegerValueField(.mouseEventClickState, value: Int64(n)); e.post(tap: .cghidEventTap); nap(30)
+            }
+            nap(80)
+        }
     case "click": let x = num(), y = num(); post(.leftMouseDown, x, y); nap(50); post(.leftMouseUp, x, y)
     case "shiftdown": held = .maskShift; key(56, true, held)
     case "shiftup": held = []; key(56, false, held)

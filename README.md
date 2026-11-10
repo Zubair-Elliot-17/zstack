@@ -55,8 +55,8 @@ Eleven roles in [`agents/`](agents/):
 | `tester` | Checks the change against the acceptance criteria and writes missing tests. |
 | `researcher` | Tech choices, "is there a better way", and periodic reviews of the team itself. |
 | `scout` | Finds where things are. Read-only, returns `file:line` only. Runs on Haiku. |
-| `local-review` | Cheap first pass on the branch diff by a local Ollama model. Runs on Haiku. |
-| `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. |
+| `local-review` | Cheap first pass on the branch diff by a local Ollama model (code files only; docs go straight to the judge). Runs on Haiku. |
+| `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. A hook (`hooks/git-readonly.sh`) limits its Bash to `git diff`, `status`, `log` and `show`. |
 
 Before a PR is opened, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. The four roles that write code preload [Ponytail](https://github.com/DietrichGebert/ponytail), the lead follows it by rule, and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
 
@@ -89,6 +89,7 @@ The installer copies everything into `~/.claude`. If a file with the same name a
 
 - **`team-resume.sh`** (SessionStart) loads the saved STATE.md and the latest role-log entries, so a new session picks up where the last one stopped.
 - **`zstack-guard.sh`** (UserPromptSubmit + Stop) nudges you into `/z` for projects under `~/claude-work/projects/` and asks for a checkpoint when STATE.md is more than 30 minutes old and files have changed.
+- **`git-readonly.sh`** needs no settings entry: the `judge` and `local-review` roles load it from their own frontmatter.
 
 ### Works best with (optional)
 
@@ -112,7 +113,7 @@ claude
 
 ## Make it yours
 
-Every stage is one short `SKILL.md` under `skills/z-*`, and every role is one Markdown file under `agents/`. To swap a gstack step for your own, edit that stage so it does the work itself. To change how strict a reviewer is, edit `agents/reviewer.md`. **Forking is encouraged.** The design notes are in [`skills/z/README.md`](skills/z/README.md).
+Every stage is one short `SKILL.md` under `skills/z-*`, and every role is one Markdown file under `agents/`. To swap a gstack step for your own, edit that stage so it does the work itself. To change how strict a reviewer is, edit `agents/reviewer.md`. If you edit the installed copies in `~/.claude`, `./sync.sh` copies them back into your clone and `./sync.sh --check` reports any drift. **Forking is encouraged.** The design notes are in [`skills/z/README.md`](skills/z/README.md).
 
 ## Contributing
 

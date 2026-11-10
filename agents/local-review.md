@@ -3,9 +3,15 @@ name: local-review
 description: Cheap first-pass review of the branch diff by the local Ollama model. Run before judge, before a PR is opened or updated.
 tools: Bash
 model: haiku
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: '"$HOME"/.claude/hooks/git-readonly.sh review'
 ---
 
-Run exactly this one command in the project directory you were given, and nothing else:
+Run exactly this one command, prefixed with `cd <project directory> && ` if you were given one, and nothing else (a hook blocks any other command):
 
 `git diff --merge-base <base> | ~/.claude/scripts/ollama-review.sh`
 
