@@ -19,10 +19,12 @@ command -v jq >/dev/null || { echo "local-llm: jq is required" >&2; exit 3; }
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 
 if [ "$source_kind" = "--url" ]; then
+  command -v textutil >/dev/null || { echo "local-llm: --url needs macOS textutil" >&2; exit 3; }
   curl -sSfL -A "Mozilla/5.0" "$source_url" | textutil -convert txt -stdin -stdout -format html > "$tmp/in"
 elif [ "$source_kind" = "--yt" ]; then
+  command -v yt-dlp >/dev/null || { echo "local-llm: --yt needs yt-dlp" >&2; exit 3; }
   yt-dlp -q --no-warnings --skip-download --write-subs --write-auto-subs \
-    --sub-langs "en,en-orig,en-US,en-GB" --sub-format vtt -o "$tmp/yt" "$source_url" >&2
+    --sub-langs "en,en-orig,en-US,en-GB" --sub-format vtt -o "$tmp/yt" "$source_url" >&2 || true
   vtt="$(ls "$tmp"/yt*.vtt 2>/dev/null | head -1 || true)"
   [ -n "$vtt" ] || { echo "local-llm: no English transcript for this video" >&2; exit 4; }
   # Drop VTT headers, timestamps and inline tags; auto-subs repeat lines, so dedupe.

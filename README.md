@@ -55,10 +55,10 @@ Eleven roles in [`agents/`](agents/):
 | `tester` | Checks the change against the acceptance criteria and writes missing tests. |
 | `researcher` | Tech choices, "is there a better way", and periodic reviews of the team itself. |
 | `scout` | Finds where things are. Read-only, returns `file:line` only. Runs on Haiku. |
-| `local-review` | Cheap first pass on the uncommitted diff by a local Ollama model. Runs on Haiku. |
+| `local-review` | Cheap first pass on the branch diff by a local Ollama model. Runs on Haiku. |
 | `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. |
 
-Before a PR is opened or updated, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. The four roles that write code preload [Ponytail](https://github.com/DietrichGebert/ponytail), the lead follows it by rule, and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
+Before a PR is opened, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. The four roles that write code preload [Ponytail](https://github.com/DietrichGebert/ponytail), the lead follows it by rule, and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
 
 ### Model tiers (optional)
 
@@ -98,7 +98,7 @@ zstack wraps these where they're strongest. Without them, the stages still run, 
 - `andrej-karpathy-skills`, `mattpocock-skills`, [`ponytail`](https://github.com/DietrichGebert/ponytail) (preloaded by every role that writes code) and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
 - Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
-- [Ollama](https://ollama.com) for the local model. Download the two models zstack uses: `ollama pull qwen3.5:9b` (first-pass code review in `scripts/ollama-review.sh`) and `ollama pull qwen3.5:4b` (log and page summaries in `scripts/local-llm`). Then put the helper on your PATH: `mkdir -p ~/.local/bin && ln -s ~/.claude/scripts/local-llm ~/.local/bin/local-llm`. It needs `jq` and `curl`; `--url` uses macOS `textutil` and `--yt` needs `yt-dlp`. Without Ollama, `local-review` prints why it skipped and you go straight to `judge`, and Claude reads long logs itself.
+- [Ollama](https://ollama.com) for the local model. Download the two models zstack uses: `ollama pull qwen3.5:9b` (first-pass code review in `scripts/ollama-review.sh`; set `OLLAMA_REVIEW_MODEL` to use another model) and `ollama pull qwen3.5:4b` (log and page summaries in `scripts/local-llm`). Then put the helper on your PATH: `mkdir -p ~/.local/bin && ln -s ~/.claude/scripts/local-llm ~/.local/bin/local-llm`. It needs `jq` and `curl`; `--url` uses macOS `textutil` and `--yt` needs `yt-dlp`. Without Ollama or the model, `local-review` prints why it skipped and you go straight to `judge`, and Claude reads long logs itself.
 
 ## Quick start
 
