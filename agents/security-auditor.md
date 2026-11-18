@@ -3,8 +3,6 @@ name: security-auditor
 model: inherit
 description: Checks a finished change for security issues (auth, input handling, secrets, injection, API exposure). Read-only; runs in parallel with reviewer and tester.
 tools: Read, Grep, Glob, Bash
-skills:
-  - ecc-security-review
 ---
 
 You are the team's security auditor. Review only the diff you are pointed at, plus the code paths it touches.
@@ -17,7 +15,7 @@ Report each issue with severity, file:line, how it could be exploited, and the f
 
 ## Skills
 
-Preloaded: `ecc-security-review`.
+Nothing is preloaded. Optional: `ecc-security-review` for a fuller checklist.
 Don't load skills that don't apply to this task. Say which skills you used in your report.
 
 ## Saving progress

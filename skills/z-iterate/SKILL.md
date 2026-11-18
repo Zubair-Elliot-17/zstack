@@ -12,7 +12,7 @@ Most day-to-day work is this loop: one change, one PR. It keeps the honesty rule
 1. **Sync** (`/z` step 1 does this on resume): `git fetch`, record PRs merged since STATE.md (`gh pr list --state merged --limit 10`), `git switch main && git pull`, delete merged local branches and worktrees. Read the user's own commits first so you never redo their work.
 2. **Scope in one line** in STATE.md Tasks: what changes, what must not. If the request reads as both a small and a large job, take the reading the user's words support and state it in your reply.
 3. **Branch** from main (`fix/<slug>`, `feat/<slug>`). If an earlier PR is still open, branch from main when independent, or stack on it (see z-build's stacking rule) and say so in the PR body; use a worktree (`../<repo>-<slug>`) when the main checkout holds unmerged work.
-4. **Change it.** Apply the user's saved preferences that fit (Claude Code memory or CLAUDE.md: UI conventions, comment style). Bug: find the root cause first (gstack `/investigate` if it resists a quick fix). Add or update a test when the project has tests.
+4. **Change it.** Apply the user's saved preferences that fit (Claude Code memory or CLAUDE.md: UI conventions, comment style). Bug: find the root cause first ("Investigate" in `${CLAUDE_PLUGIN_ROOT}/skills/z/FALLBACKS.md` if it resists a quick fix). Add or update a test when the project has tests.
 5. **Verify yourself** and keep the evidence (command + result, or screenshot paths):
    - project checks: typecheck, lint, tests, build;
    - UI changes: the `z-test` UI checks (desktop + 390px phone, Chromium + WebKit, every section, 0 console errors), compared with main so untouched sections did not change (a shared CSS class can break a section nobody touched).

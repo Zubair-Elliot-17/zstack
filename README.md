@@ -96,10 +96,11 @@ Without the plugin system, `./install.sh` copies everything into `~/.claude` (na
 
 ### Works best with (optional)
 
-zstack wraps these where they're strongest. Without them, the stages still run, and the lead does that step itself:
+Nothing here is required. Every stage has a built-in version (`skills/z/FALLBACKS.md`) and these replace it when installed. Run `/zstack:z doctor` to see what you have:
 
 - [gstack](https://github.com/garrytan/gstack): `/office-hours`, `/autoplan`, `/qa-only`, `/ship`, `/retro`, `/learn`
-- `andrej-karpathy-skills`, `mattpocock-skills`, [`ponytail`](https://github.com/DietrichGebert/ponytail) (preloaded by every role that writes code) and the ECC skills that the agents preload (`coding-standards`, `ecc-security-review`, `react-patterns`, `api-design`)
+- [`ponytail`](https://github.com/DietrichGebert/ponytail) (DietrichGebert, MIT): a stricter "smallest change" rule for every role that writes code; [`mattpocock-skills`](https://github.com/mattpocock/skills) (Matt Pocock, MIT): `tdd`, `diagnosing-bugs`
+- Skills the agents use when present: `coding-standards`, `react-patterns`, `api-design`, `frontend-a11y`, `postgres-patterns`
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
 - Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
 - [Ollama](https://ollama.com) for the local model. Download the two models zstack uses: `ollama pull qwen3.5:9b` (first-pass code review in `scripts/ollama-review.sh`; set `OLLAMA_REVIEW_MODEL` to use another model) and `ollama pull qwen3.5:4b` (log and page summaries in `scripts/local-llm`). Then put the helper on your PATH: `mkdir -p ~/.local/bin && ln -s ~/.claude/scripts/local-llm ~/.local/bin/local-llm`. It needs `jq` and `curl`; `--url` uses macOS `textutil` and `--yt` needs `yt-dlp`. Without Ollama or the model, `local-review` prints why it skipped and you go straight to `judge`, and Claude reads long logs itself.
@@ -116,7 +117,7 @@ claude
 
 ## Make it yours
 
-Every stage is one short `SKILL.md` under `skills/z-*`, and every role is one Markdown file under `agents/`. To swap a gstack step for your own, edit that stage so it does the work itself. To change how strict a reviewer is, edit `agents/reviewer.md`. If you edit the installed copies in `~/.claude`, `./sync.sh` copies them back into your clone and `./sync.sh --check` reports any drift. **Forking is encouraged.** The design notes are in [`skills/z/README.md`](skills/z/README.md).
+Every stage is one short `SKILL.md` under `skills/z-*`, and every role is one Markdown file under `agents/`. To change a built-in step, edit `skills/z/FALLBACKS.md`. To change how strict a reviewer is, edit `agents/reviewer.md`. **Forking is encouraged.** The design notes are in [`skills/z/README.md`](skills/z/README.md).
 
 ## Contributing
 
