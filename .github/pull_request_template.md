@@ -7,3 +7,5 @@
 
 - [ ] I read CONTRIBUTING.md
 - [ ] One stage or role per PR, no unrelated changes
+- [ ] PR title follows Conventional Commits (`feat:`, `fix:`, `docs:` ...)
+- [ ] `CHANGELOG.md` updated for user-visible changes

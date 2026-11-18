@@ -1,0 +1,19 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        run: shellcheck -S warning install.sh sync.sh hooks/*.sh scripts/*
+      - name: Install smoke test (clean CLAUDE_HOME)
+        run: |
+          export CLAUDE_HOME="$(mktemp -d)"
+          ./install.sh
+          ./sync.sh --check
