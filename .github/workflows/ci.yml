@@ -20,3 +20,9 @@ jobs:
           ! grep -rl 'CLAUDE_PLUGIN_ROOT' "$CLAUDE_HOME"/skills "$CLAUDE_HOME"/agents "$CLAUDE_HOME"/team-templates
       - name: Plugin files are valid JSON
         run: jq -e . .claude-plugin/plugin.json .claude-plugin/marketplace.json hooks/hooks.json
+      - name: Skills are self-consistent (check-skills, doctor runs)
+        run: |
+          export CLAUDE_HOME="$(mktemp -d)"
+          ./install.sh
+          bash scripts/check-skills.sh
+          CLAUDE_HOME="$CLAUDE_HOME" bash scripts/doctor.sh
