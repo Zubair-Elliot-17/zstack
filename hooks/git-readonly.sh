@@ -1,7 +1,7 @@
 #!/bin/bash
 # PreToolUse hook for the judge and local-review roles: Bash may only read git (diff, status, log, show).
 # Argument "auto" (used from hooks.json, which fires for every agent): the mode comes from the calling
-# agent's type (judge, local-review, with or without a "plugin:" prefix); any other agent or the main session passes.
+# agent's type (judge, local-review, with or without a "zstack:" prefix); any other agent or the main session passes.
 # Argument "review": a git diff must be piped into ollama-review.sh. Anything else is blocked.
 deny() { echo "Blocked: $1. This role may only run one plain git diff, status, log or show (no quotes, pipes or chaining; paths without spaces)." >&2; exit 2; }
 
@@ -11,8 +11,8 @@ if [ "$mode" = auto ]; then
   # Fails open without jq: this hook is a guardrail on top of the agents' own instructions.
   command -v jq >/dev/null || { echo "zstack: jq not found, judge/local-review Bash is not restricted" >&2; exit 0; }
   case "$(printf '%s' "$input" | jq -r '.agent_type // empty')" in
-    judge|*:judge) mode="" ;;
-    local-review|*:local-review) mode=review ;;
+    judge|zstack:judge) mode="" ;;
+    local-review|zstack:local-review) mode=review ;;
     *) exit 0 ;;
   esac
 fi
