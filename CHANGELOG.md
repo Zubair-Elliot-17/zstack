@@ -4,6 +4,8 @@ All notable changes are listed here. Format: [Keep a Changelog](https://keepacha
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-18
+
 ### Added
 - Claude Code plugin packaging: `.claude-plugin/plugin.json` and `marketplace.json`, and `hooks/hooks.json` (install with `claude plugin install zstack@zstack`).
 - `git-readonly.sh auto` mode: one PreToolUse hook restricts `judge` and `local-review` by agent type (plugin agents cannot carry their own hooks).
@@ -21,5 +23,6 @@ All notable changes are listed here. Format: [Keep a Changelog](https://keepacha
 
 First public release: the seven-stage sprint (`/z`, `/z-think` to `/z-reflect`), the `/z-iterate` quick lane, the agent team roles, resumable `STATE.md`, hooks, and the `install.sh` / `sync.sh` scripts.
 
-[Unreleased]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Zubair-Elliot-17/zstack/releases/tag/v0.1.0
