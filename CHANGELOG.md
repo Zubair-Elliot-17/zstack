@@ -4,6 +4,11 @@ All notable changes are listed here. Format: [Keep a Changelog](https://keepacha
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-18
+
+### Changed
+- README: "See it work" section with doctor output and an example STATE.md.
+
 ## [0.2.1] - 2026-11-18
 
 ### Changed
@@ -28,7 +33,8 @@ All notable changes are listed here. Format: [Keep a Changelog](https://keepacha
 
 First public release: the seven-stage sprint (`/z`, `/z-think` to `/z-reflect`), the `/z-iterate` quick lane, the agent team roles, resumable `STATE.md`, hooks, and the `install.sh` / `sync.sh` scripts.
 
-[Unreleased]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Zubair-Elliot-17/zstack/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Zubair-Elliot-17/zstack/releases/tag/v0.1.0
