@@ -14,6 +14,27 @@ It's built from plain Markdown skills and agent definitions. You can read each o
 
 ---
 
+## Quick start
+
+You need [Claude Code](https://docs.claude.com/en/docs/claude-code), `git`, `gh` (logged in) and `jq`. Nothing else.
+
+```bash
+claude plugin marketplace add Zubair-Elliot-17/zstack
+claude plugin install zstack@zstack
+cd ~/claude-work/projects/my-app   # any git project; or $ZSTACK_PROJECTS/my-app
+claude
+```
+
+Then, inside Claude Code:
+
+```text
+> /zstack:z build a habit tracker with streaks
+```
+
+`/z` creates `.claude/team/STATE.md` (kept out of git), picks the full sprint or the quick lane, and starts working. Close the terminal whenever you like. Next session, type `/zstack:z` or say "carry on" and it resumes at the saved *Next action*. For a one-off fix, `/zstack:z-iterate fix the login redirect` goes straight to a verified PR. Run `/zstack:z doctor` to see which optional tools are present. Details are under [Install](#install).
+
+---
+
 ## Why
 
 Coding agents are fast but forgetful. Long tasks drift, "tests pass" gets claimed without running them, and when a session ends, its context is gone. zstack fixes this with a few simple rules:
@@ -104,16 +125,6 @@ Nothing here is required. Every stage has a built-in version (`skills/z/FALLBACK
 - [Playwright](https://playwright.dev/python/) for `skills/z-test/shots.py`
 - Xcode Command Line Tools and Accessibility for your terminal, for `team-templates/macui/` (synthetic UI QA of native Mac apps; see its README)
 - [Ollama](https://ollama.com) for the local model. Download the two models zstack uses: `ollama pull qwen3.5:9b` (first-pass code review in `scripts/ollama-review.sh`; set `OLLAMA_REVIEW_MODEL` to use another model) and `ollama pull qwen3.5:4b` (log and page summaries in `scripts/local-llm`). Then put the helper on your PATH: `mkdir -p ~/.local/bin && ln -s ~/.claude/scripts/local-llm ~/.local/bin/local-llm`. It needs `jq` and `curl`; `--url` uses macOS `textutil` and `--yt` needs `yt-dlp`. Without Ollama or the model, `local-review` prints why it skipped and you go straight to `judge`, and Claude reads long logs itself.
-
-## Quick start
-
-```text
-cd ~/claude-work/projects/my-app   # or $ZSTACK_PROJECTS/my-app
-claude
-> /z build a habit tracker with streaks
-```
-
-`/z` creates `.claude/team/STATE.md`, which is excluded from git so it stays local. It picks the lane and starts. Next time, just type `/z`, or say "carry on".
 
 ## Make it yours
 
