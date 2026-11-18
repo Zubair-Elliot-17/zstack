@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: ShellCheck
-        run: shellcheck -S warning install.sh sync.sh hooks/*.sh scripts/*
+        run: shellcheck -S warning install.sh hooks/*.sh scripts/*
       - name: Install smoke test (clean CLAUDE_HOME)
         run: |
           export CLAUDE_HOME="$(mktemp -d)"
