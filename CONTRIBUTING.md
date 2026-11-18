@@ -14,7 +14,7 @@ To get a change into this repo:
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `docs:`, `chore:`, `ci:`, `refactor:`. Imperative, under 72 characters.
 - PRs are squash-merged, so the PR title becomes the commit on `main` and should follow the same format.
 - User-visible changes get a line under `[Unreleased]` in `CHANGELOG.md`. Releases are tagged `vX.Y.Z` (SemVer).
-- CI runs ShellCheck and an install-and-drift check; both must pass.
+- CI runs ShellCheck and an install smoke test; both must pass.
 
 Bigger ideas (a new stage, a new role, a different sprint shape): open an issue first so we can agree on direction before you build it.
 

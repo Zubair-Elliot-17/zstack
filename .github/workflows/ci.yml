@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: ShellCheck
         run: shellcheck -S warning install.sh sync.sh hooks/*.sh scripts/*
-      - name: Install into a clean CLAUDE_HOME, then check for drift
+      - name: Install smoke test (clean CLAUDE_HOME)
         run: |
           export CLAUDE_HOME="$(mktemp -d)"
           ./install.sh
