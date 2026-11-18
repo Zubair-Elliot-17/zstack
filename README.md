@@ -79,17 +79,20 @@ The lead (your main Claude Code session) picks the lightest mode that fits: **So
 
 Requirements: [Claude Code](https://docs.claude.com/en/docs/claude-code), `git`, `gh` (logged in) and `jq`. The hooks use macOS `stat`; on Linux, change `stat -f %m` to `stat -c %Y` in `hooks/zstack-guard.sh`.
 
+Install it as a Claude Code plugin:
+
 ```bash
-git clone https://github.com/Zubair-Elliot-17/zstack.git
-cd zstack
-./install.sh
+claude plugin marketplace add Zubair-Elliot-17/zstack
+claude plugin install zstack@zstack
 ```
 
-The installer copies everything into `~/.claude`. If a file with the same name already exists, it keeps a `.bak` copy. It then prints the hook block to add to `~/.claude/settings.json`:
+The skills are then namespaced: run `/zstack:z` to start (or resume) a sprint. The hooks load by themselves:
 
 - **`team-resume.sh`** (SessionStart) loads the saved STATE.md and the latest role-log entries, so a new session picks up where the last one stopped.
-- **`zstack-guard.sh`** (UserPromptSubmit + Stop) nudges you into `/z` for projects under `~/claude-work/projects/` (override with `ZSTACK_PROJECTS`) and asks for a checkpoint when STATE.md is more than 30 minutes old and files have changed.
-- **`git-readonly.sh`** needs no settings entry: the `judge` and `local-review` roles load it from their own frontmatter.
+- **`zstack-guard.sh`** (UserPromptSubmit + Stop) nudges you into `/zstack:z` for projects under `~/claude-work/projects/` (override with `ZSTACK_PROJECTS`) and asks for a checkpoint when STATE.md is more than 30 minutes old and files have changed.
+- **`git-readonly.sh`** (PreToolUse on Bash) limits the `judge` and `local-review` roles to read-only git commands. It lets every other agent and your main session through.
+
+Without the plugin system, `./install.sh` copies everything into `~/.claude` (names are then un-namespaced: `/z`) and prints the hook block to merge into `settings.json`.
 
 ### Works best with (optional)
 

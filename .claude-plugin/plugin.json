@@ -1,0 +1,10 @@
+{
+  "name": "zstack",
+  "version": "0.2.0",
+  "description": "A Think → Plan → Build → Review → Test → Ship → Reflect sprint for Claude Code: stage skills, a team of agent roles, resumable state and hooks.",
+  "author": { "name": "Zubair Elliot", "url": "https://github.com/Zubair-Elliot-17" },
+  "homepage": "https://github.com/Zubair-Elliot-17/zstack",
+  "repository": "https://github.com/Zubair-Elliot-17/zstack",
+  "license": "MIT",
+  "keywords": ["sprint", "workflow", "agents", "skills"]
+}

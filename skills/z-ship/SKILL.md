@@ -5,7 +5,7 @@ description: zstack stage 6. Ship the change — gstack /ship to open the PR, th
 
 # z-ship
 
-**Thesis projects** (`Type: thesis` in STATE.md): follow the Ship row and the rules in `~/.claude/skills/z/THESIS.md` instead of the steps below.
+**Thesis projects** (`Type: thesis` in STATE.md): follow the Ship row and the rules in `${CLAUDE_PLUGIN_ROOT}/skills/z/THESIS.md` instead of the steps below.
 
 1. `Autonomy: guided`: ask the user before pushing. `full`: pushing the feature branch and opening the PR is pre-approved (never main). Then run gstack `/ship` (sync main, tests, docs check, push, open PR). Follow the user's commit rules (no Claude attribution).
    - Before /ship, check `gstack-learnings-search --type pitfall` for known ship blockers in this repo. If the repo has no `.github/workflows/*.yml` or no JS/TS test runner (see STATE.md `Stack:`), skip /ship: its pregate can't map test lanes there and always fails. Ship by hand instead: run the `Verify:` commands on the branch head, push, open the PR with each approved criterion as PASS / MANUAL-PASS / CARRIED @ sha in the body (pending manual rows as a `- [ ]` checklist under "Manual QA not run", PR kept draft while any are pending), and check README and docs against the diff yourself. For other blocked repos, try /ship once per sprint and bypass the same way only if it really blocks.

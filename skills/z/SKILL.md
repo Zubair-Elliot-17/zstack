@@ -5,18 +5,18 @@ description: zstack entry point. Shows where the current project is in the zstac
 
 # zstack
 
-zstack is a sprint built on the agent team (`~/.claude/agents/`) and wrapping gstack where gstack is strongest. Read `~/.claude/skills/z/README.md` once if you need the full picture.
+zstack is a sprint built on the agent team (`${CLAUDE_PLUGIN_ROOT}/agents/`) and wrapping gstack where gstack is strongest. Read `${CLAUDE_PLUGIN_ROOT}/skills/z/README.md` once if you need the full picture.
 
 1. Look for `.claude/team/STATE.md` in the project root.
    - **Found:** read it plus the latest entry of each `.claude/team/logs/*.md`, and the project's learnings (`~/.claude/skills/gstack/bin/gstack-learnings-search --limit 10`; nothing printed means none yet). Skim long logs with `local-llm` first (treat its answer as a draft).
      **Sync before anything else:** `git fetch`; for each PR STATE.md lists as open, `gh pr view <n> --json state,mergeCommit`. Merged → pull main, record the merge SHA, run the z-ship post-merge check, delete the branch, mark the task done. Also note commits on main you didn't make (the user's own fixes). The user should never have to say "merged" for you to notice.
      Tell the user in 2–3 lines: goal, stage, what the sync found, next action. With `Autonomy: full`, continue straight on; otherwise ask whether to continue. A STATE.md with no `Autonomy` line predates this rule: treat it as `guided` until the user says otherwise.
-   - **Not found:** take the goal from the user's message (ask only if there is none), create `.claude/team/` from `~/.claude/team-templates/STATE.md`, add `.claude/team/` to `.git/info/exclude`, and pick:
+   - **Not found:** take the goal from the user's message (ask only if there is none), create `.claude/team/` from `${CLAUDE_PLUGIN_ROOT}/team-templates/STATE.md`, add `.claude/team/` to `.git/info/exclude`, and pick:
      - `Type`: `thesis` for a thesis or other academic writing (see `THESIS.md`), else `code`.
      - `Autonomy`: `full` (default: decide and deliver) unless they ask to approve steps (`guided`).
      - `Lane`: `sprint` (new product, data/auth changes, several modules) → `Stage: think`, run `/z-think`; or `quick` (a small site, fix or tweak) → `Stage: iterate`, run `/z-iterate`.
 2. To continue, invoke the skill for the stage in STATE.md (`z-think`, `z-plan`, `z-build`, `z-review`, `z-test`, `z-ship`, `z-reflect`, `z-iterate`). New feedback on a shipped project goes to `/z-iterate`, or a new sprint if it is big (see its first rule).
-3. `Type: thesis` projects: every stage follows `~/.claude/skills/z/THESIS.md`. Its "claims need evidence" means quotes, counts and citations checked against the source files, not test runs.
+3. `Type: thesis` projects: every stage follows `${CLAUDE_PLUGIN_ROOT}/skills/z/THESIS.md`. Its "claims need evidence" means quotes, counts and citations checked against the source files, not test runs.
 4. Small one-off tasks don't need zstack; say so and just do them (Solo mode).
 
 ## Rules for every stage

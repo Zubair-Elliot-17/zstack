@@ -5,7 +5,7 @@ Type: <code | thesis>
 Autonomy: <full | guided>
 Lane: <sprint | quick>
 Mode: <Solo | Pipeline | Team>
-Stack: <e.g. web-js | swiftpm-clt | python> (see ~/.claude/team-templates/stacks.md)
+Stack: <e.g. web-js | swiftpm-clt | python> (see team-templates/stacks.md in the zstack plugin)
 Verify: <build + test commands the lead re-runs before advancing>
 Stage: <think | plan | build | review | test | ship | reflect | iterate>
 Branch / PR: <branch, open PR #s, CI status; Stacked on: <branch> @ <tip sha> when stacked>

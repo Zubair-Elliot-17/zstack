@@ -46,4 +46,4 @@ After every stage or big task, and at least every 30 minutes: update STATE.md an
 Projects with `Type: thesis` in STATE.md run the same sprint with academic steps (the optional academic-research-skills plugin, evidence checks, an examiner rubric, a submission gate). Each stage skill points to `THESIS.md`.
 
 ## Making it yours
-Each stage is a plain SKILL.md under `~/.claude/skills/z-*`. To replace a gstack step, edit that stage to do the work itself and drop the gstack call.
+Each stage is a plain SKILL.md under `${CLAUDE_PLUGIN_ROOT}/skills/z-*`. To replace a gstack step, edit that stage to do the work itself and drop the gstack call.

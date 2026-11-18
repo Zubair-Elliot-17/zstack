@@ -16,4 +16,7 @@ jobs:
         run: |
           export CLAUDE_HOME="$(mktemp -d)"
           ./install.sh
-          ./sync.sh --check
+          test -f "$CLAUDE_HOME/skills/z/SKILL.md"
+          ! grep -rl 'CLAUDE_PLUGIN_ROOT' "$CLAUDE_HOME"/skills "$CLAUDE_HOME"/agents "$CLAUDE_HOME"/team-templates
+      - name: Plugin files are valid JSON
+        run: jq -e . .claude-plugin/plugin.json .claude-plugin/marketplace.json hooks/hooks.json
