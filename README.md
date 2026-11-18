@@ -16,12 +16,12 @@ It's built from plain Markdown skills and agent definitions. You can read each o
 
 ## Quick start
 
-You need [Claude Code](https://docs.claude.com/en/docs/claude-code), `git`, `gh` (logged in) and `jq`. Nothing else.
+You need [Claude Code](https://docs.claude.com/en/docs/claude-code), `git`, `gh` (logged in) and `jq`. No other skill or tool is needed. (The hooks assume macOS; see [Install](#install) for Linux.)
 
 ```bash
 claude plugin marketplace add Zubair-Elliot-17/zstack
 claude plugin install zstack@zstack
-cd ~/claude-work/projects/my-app   # any git project; or $ZSTACK_PROJECTS/my-app
+cd ~/my-app   # any git project
 claude
 ```
 
@@ -31,7 +31,7 @@ Then, inside Claude Code:
 > /zstack:z build a habit tracker with streaks
 ```
 
-`/z` creates `.claude/team/STATE.md` (kept out of git), picks the full sprint or the quick lane, and starts working. Close the terminal whenever you like. Next session, type `/zstack:z` or say "carry on" and it resumes at the saved *Next action*. For a one-off fix, `/zstack:z-iterate fix the login redirect` goes straight to a verified PR. Run `/zstack:z doctor` to see which optional tools are present. Details are under [Install](#install).
+`/zstack:z` creates `.claude/team/STATE.md` (kept out of git), picks the full sprint or the quick lane, and starts working. Close the terminal whenever you like: a new session loads the saved state automatically, and `/zstack:z` resumes at the *Next action*. For a one-off fix, `/zstack:z-iterate fix the login redirect` goes straight to a verified PR. Run `/zstack:z doctor` to see which optional tools are present. Hooks, Linux notes and optional tools are under [Install](#install). (Skill names below are shown without the `zstack:` prefix.)
 
 ---
 
