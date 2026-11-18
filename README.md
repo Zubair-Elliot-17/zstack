@@ -35,6 +35,46 @@ Then, inside Claude Code:
 
 ---
 
+## See it work
+
+What `/zstack:z doctor` prints (real output; nothing is required, missing tools just use the built-in steps):
+
+```text
+zstack optional tools (built-in steps cover anything missing):
+  present   gstack                 /office-hours, /ship, /qa-only, /retro...
+  present   ponytail               stricter smallest-change rule
+  missing   mattpocock-skills      tdd, diagnosing-bugs
+  present   ollama                 local-review, local-llm
+  present   jq                     git-readonly guard, local-llm
+  present   gh                     PR sync, ship
+  missing   playwright             z-test UI screenshots
+```
+
+Mid-sprint, `.claude/team/STATE.md` looks like this (an example, trimmed). It is why a closed terminal costs nothing: a new session reads it and carries on from *Next action*.
+
+```markdown
+Type: code   Autonomy: full   Lane: sprint   Mode: Pipeline
+Verify: npm test && npm run build
+Stage: review
+Branch / PR: feat/streaks (#4, CI green)
+Running: reviewer @ 3f2a1c9 since 14:02, security-auditor @ 3f2a1c9 since 14:02
+
+## Next action
+Wait for reviewer and security-auditor, route confirmed findings to implementer, then /zstack:z-test.
+
+## Tasks
+| # | Task                  | Owner       | Status      | Notes                |
+|---|-----------------------|-------------|-------------|----------------------|
+| 1 | Streak model + tests  | implementer | done        | 3f2a1c9              |
+| 2 | Daily check-in screen | implementer | done        | src/CheckIn.tsx      |
+| 3 | Review + audit        | reviewer    | in progress |                      |
+
+## Decisions
+- 2026-11-18 Store streaks per user, not per habit (simpler, matches the spec)
+```
+
+---
+
 ## Why
 
 Coding agents are fast but forgetful. Long tasks drift, "tests pass" gets claimed without running them, and when a session ends, its context is gone. zstack fixes this with a few simple rules:
