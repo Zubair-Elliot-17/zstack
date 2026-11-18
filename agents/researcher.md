@@ -30,7 +30,7 @@ When asked to review the team (or when research reveals something relevant), com
 ## Skills
 
 Nothing is preloaded.
-Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them:
+Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them (skip any that are not installed):
 - `claude-scientific-writer:research-lookup`: academic paper searches
 - `claude-scientific-writer:citation-management`: building a reference list
 - `reverse-engineer-anything`: learning how a shipped app, package or site implements a feature

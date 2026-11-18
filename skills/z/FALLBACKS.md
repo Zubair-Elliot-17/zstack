@@ -26,8 +26,8 @@ Run the `reviewer` on the plan file in fresh context as an outside voice and rec
 
 ## Gate check (weakened checks)
 (Optional upgrade: gstack `gstack-gate-diff`.) List what the diff weakens:
-`git diff --merge-base <base> -U0 | grep -nE '^\+.*(skip|xit\(|xdescribe|\.only|TODO|--no-verify|eslint-disable|@ts-ignore|noqa|nosec|timeout|retry)|^-.*(assert|expect|test\()'`
-Hits are leads, not verdicts: the reviewer decides whether each relaxation silences a real failure.
+`git add -N . && git diff --merge-base <base> -U0 | grep -vE '^(\+\+\+|---) ' | grep -niE '^\+.*(skip|xit\(|xdescribe|\.only|--no-verify|eslint-disable|@ts-ignore|noqa|nosec|catch *(\([^)]*\))? *\{ *\}|except[^:]*: *pass)|^-.*(assert|expect|def test|func test|test\()'`
+Also look by eye for raised timeouts, new retries, and code that behaves differently under test or CI environment variables. Hits are leads, not verdicts: the reviewer decides whether each relaxation silences a real failure.
 
 ## Review
 (Optional upgrade: gstack `/review`, `/cso`, run report-only; or the `code-review` skill.) The default is the parallel `reviewer`, `security-auditor` and `tester` in z-review. Each reports `file:line`, what is wrong, and a concrete failing input. No findings without a concrete failure.

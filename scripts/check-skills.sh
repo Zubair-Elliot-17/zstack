@@ -26,6 +26,8 @@ for f in skills/z-*/SKILL.md; do
   fi
 done
 [ -f skills/z/FALLBACKS.md ] || bad "skills/z/FALLBACKS.md missing"
-bash scripts/doctor.sh >/dev/null || bad "doctor.sh failed"
+bash scripts/doctor.sh | grep -q 'gstack' || bad "doctor.sh printed no tool list"
+# dropped references must not creep back (CHANGELOG may mention them)
+grep -rniE 'karpathy|academic-research|\bars-' skills agents README.md team-templates scripts/doctor.sh && bad "dropped reference found"
 [ "$fail" = 0 ] && echo "ok"
 exit "$fail"

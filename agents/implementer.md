@@ -21,7 +21,7 @@ You are the team's implementer and the only agent that edits code.
 ## Skills
 
 Nothing is preloaded. Optional: `mattpocock-skills:tdd` for test-first work.
-Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them:
+Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them (skip any that are not installed):
 - `coding-standards`: naming or structure decisions
 - `error-handling`: new error paths or retries
 - `react-patterns`: the task touches React components

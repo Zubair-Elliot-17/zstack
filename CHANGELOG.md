@@ -7,7 +7,6 @@ All notable changes are listed here. Format: [Keep a Changelog](https://keepacha
 ### Added
 - Claude Code plugin packaging: `.claude-plugin/plugin.json` and `marketplace.json`, and `hooks/hooks.json` (install with `claude plugin install zstack@zstack`).
 - `git-readonly.sh auto` mode: one PreToolUse hook restricts `judge` and `local-review` by agent type (plugin agents cannot carry their own hooks).
-
 - `skills/z/FALLBACKS.md`: built-in versions of every external step (think, plan review, gate check, review, QA, investigate, ship checklist, learnings, retro) and the smallest-change rule.
 - `/z doctor` (`scripts/doctor.sh`) lists optional tools present or missing; `scripts/check-skills.sh` and a CI job check the stages work with nothing else installed.
 

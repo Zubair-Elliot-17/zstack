@@ -20,7 +20,7 @@ Return the plan as a single Markdown document ready to save. Do not edit files. 
 ## Skills
 
 Nothing is preloaded.
-Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them:
+Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them (skip any that are not installed):
 - `hexagonal-architecture`: the change crosses domain/IO boundaries
 - `api-design`: the plan adds or changes endpoints
 Don't load skills that don't apply to this task. Say which skills you used in your report.

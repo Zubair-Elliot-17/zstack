@@ -1,6 +1,6 @@
 # zstack thesis mode
 
-Nothing here is required. Every step below is written to be done by hand; optional skills for Word/PowerPoint output (docx, pptx) make the file work easier.
+Nothing here is required. Every step below is written to be done by hand. Without the optional docx/pptx/writing skills, draft in Markdown, convert with `pandoc` (`.docx`) and `soffice --headless --convert-to pdf`, and outline the defence deck as a slide-by-slide Markdown list.
 
 Used when STATE.md has `Type: thesis`. Same sprint, same STATE.md, logs and checkpoints; each stage swaps its software steps for the ones below. The "deliverable" is one assembled document; "tests" are evidence and consistency checks.
 

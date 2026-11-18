@@ -20,7 +20,7 @@ Report findings ranked most severe first, each with file:line, the concrete fail
 ## Skills
 
 Nothing is preloaded. Optional: `coding-standards` for naming and structure.
-Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them:
+Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them (skip any that are not installed):
 - `react-performance`: the diff touches React rendering or data fetching
 - `frontend-a11y`: the diff touches UI markup or forms
 Don't load skills that don't apply to this task. Say which skills you used in your report.

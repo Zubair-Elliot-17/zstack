@@ -7,6 +7,7 @@ description: zstack entry point. Shows where the current project is in the zstac
 
 zstack is a sprint built on the agent team (`${CLAUDE_PLUGIN_ROOT}/agents/`) and works on its own: every step has a built-in version in `${CLAUDE_PLUGIN_ROOT}/skills/z/FALLBACKS.md`, and optional tools (gstack, ponytail, mattpocock-skills) replace them when installed. Read `${CLAUDE_PLUGIN_ROOT}/skills/z/README.md` once if you need the full picture.
 
+0. `/z doctor` (check this first, before step 1): run `${CLAUDE_PLUGIN_ROOT}/scripts/doctor.sh`, show which optional tools are present or missing, and stop. Nothing is required, and doctor never creates STATE.md.
 1. Look for `.claude/team/STATE.md` in the project root.
    - **Found:** read it plus the latest entry of each `.claude/team/logs/*.md`, and the project's learnings (`.claude/team/learnings.md`, or `gstack-learnings-search --limit 10` if gstack is installed; none yet is fine). Skim long logs with `local-llm` first (treat its answer as a draft).
      **Sync before anything else:** `git fetch`; for each PR STATE.md lists as open, `gh pr view <n> --json state,mergeCommit`. Merged → pull main, record the merge SHA, run the z-ship post-merge check, delete the branch, mark the task done. Also note commits on main you didn't make (the user's own fixes). The user should never have to say "merged" for you to notice.
@@ -17,8 +18,7 @@ zstack is a sprint built on the agent team (`${CLAUDE_PLUGIN_ROOT}/agents/`) and
      - `Lane`: `sprint` (new product, data/auth changes, several modules) → `Stage: think`, run `/z-think`; or `quick` (a small site, fix or tweak) → `Stage: iterate`, run `/z-iterate`.
 2. To continue, invoke the skill for the stage in STATE.md (`z-think`, `z-plan`, `z-build`, `z-review`, `z-test`, `z-ship`, `z-reflect`, `z-iterate`). New feedback on a shipped project goes to `/z-iterate`, or a new sprint if it is big (see its first rule).
 3. `Type: thesis` projects: every stage follows `${CLAUDE_PLUGIN_ROOT}/skills/z/THESIS.md`. Its "claims need evidence" means quotes, counts and citations checked against the source files, not test runs.
-4. `/z doctor`: run `${CLAUDE_PLUGIN_ROOT}/scripts/doctor.sh` and show which optional tools are present or missing. Nothing is required.
-5. Small one-off tasks don't need zstack; say so and just do them (Solo mode).
+4. Small one-off tasks don't need zstack; say so and just do them (Solo mode).
 
 ## Rules for every stage
 - **Running roles.** When you launch a role in the background, add it to STATE.md `Running:` before doing anything else; remove it when its result arrives. While `Running:` names a tester, reviewer or auditor, don't edit tracked files in that checkout. After /clear or a resume, trust `Running:` over memory (ask the user to check `/tasks` if unsure).

@@ -3,7 +3,7 @@
 A sprint for Claude Code: **Think → Plan → Build → Review → Test → Ship → Reflect**.
 Each stage is a short skill (`/z-think` … `/z-reflect`); `/z` syncs merged PRs, shows status and resumes.
 Quick lane: `/z-iterate` takes one fix or piece of feedback straight to a verified PR (most day-to-day work).
-STATE.md `Autonomy: full` (default) means the lead decides, answers gstack's questions itself and logs why; `guided` brings decisions to the user.
+STATE.md `Autonomy: full` (default) means the lead decides, answers any optional skill's questions itself and logs why; `guided` brings decisions to the user.
 
 ## How it fits together
 

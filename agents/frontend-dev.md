@@ -16,7 +16,7 @@ You are the team's frontend developer. Edit only the files the lead assigned to 
 ## Skills
 
 Nothing is preloaded. For React work, use `react-patterns` if installed.
-Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them:
+Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them (skip any that are not installed):
 - `frontend-patterns`: state management or Next.js structure
 - `frontend-a11y`: forms, modals, menus or keyboard flows
 - `react-performance`: lists, data fetching or slow renders

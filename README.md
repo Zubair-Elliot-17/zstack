@@ -58,7 +58,7 @@ Eleven roles in [`agents/`](agents/):
 | `local-review` | Cheap first pass on the branch diff by a local Ollama model (code files only; docs go straight to the judge). Runs on Haiku. |
 | `judge` | Adversarial reviewer: assumes the diff is wrong, one line per finding. Runs on Sonnet. A hook (`hooks/git-readonly.sh`) limits its Bash to `git diff`, `status`, `log` and `show`. |
 
-Before a PR is opened, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. The four roles that write code preload [Ponytail](https://github.com/DietrichGebert/ponytail), the lead follows it by rule, and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
+Before a PR is opened, the stages run `local-review` on the branch diff, fix the obvious findings, then run `judge`. The local review is a cheap first pass, not a replacement for the judge. Everyone who writes code follows the built-in smallest-change rule ([Ponytail](https://github.com/DietrichGebert/ponytail) replaces it if installed), and every plan says what the change does for user, developer and agent experience. These rules live in [`skills/z/SKILL.md`](skills/z/SKILL.md).
 
 ### Model tiers (optional)
 

@@ -26,7 +26,7 @@ Tests follow "Smallest change" in `${CLAUDE_PLUGIN_ROOT}/skills/z/FALLBACKS.md`:
 ## Skills
 
 Nothing is preloaded.
-Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them:
+Also invoke (Skill tool) any skills the lead names in your brief, and these when the task needs them (skip any that are not installed):
 - `react-testing`: testing React components or hooks
 - `e2e-testing`: writing or fixing Playwright tests
 - `mattpocock-skills:tdd`: adding a missing test for a criterion
