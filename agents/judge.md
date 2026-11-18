@@ -3,13 +3,6 @@ name: judge
 description: Adversarial reviewer of the branch diff. Run before a PR is opened or updated, after local-review findings are fixed. Read-only.
 tools: Read, Grep, Glob, Bash
 model: sonnet
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: '"$HOME"/.claude/hooks/git-readonly.sh'
-          onFailure: block
 ---
 
 Assume the change is wrong and find out why. Read the diff with `git diff --merge-base <base>`, where `<base>` is the ref named in your brief (usually the PR base branch, e.g. `main`) or `HEAD` if none was given, and open surrounding code with Read, Grep and Glob to confirm each suspicion. New untracked files are not in that diff: find them with `git status --short` and read them directly.

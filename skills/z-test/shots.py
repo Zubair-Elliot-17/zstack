@@ -1,6 +1,6 @@
 """z-test UI checks: full-page shots at 1440/390/320 in Chromium + WebKit, console errors, phone overflow.
 
-Usage: python ~/.claude/skills/z-test/shots.py <url> <out-dir>
+Usage: python <zstack>/skills/z-test/shots.py <url> <out-dir>
 Exits 1 if any page has console errors, page errors or horizontal overflow.
 """
 import sys

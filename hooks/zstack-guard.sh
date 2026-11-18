@@ -20,7 +20,7 @@ age=$(( ( $(date +%s) - $(stat -f %m "$state") ) / 60 ))
 changed=$(find "$proj" -newer "$state" -type f -not -path '*/node_modules/*' -not -path '*/.git/*' \
   -not -path '*/.claude/team/*' -not -path '*/dist/*' -not -path '*/.venv/*' -not -path '*/.next/*' -print -quit 2>/dev/null)
 [ -z "$changed" ] && exit 0
-msg="Checkpoint due: STATE.md last saved ${age} min ago. Checkpoint now (see Checkpoints in ${CLAUDE_HOME:-$HOME/.claude}/skills/z/README.md): update STATE.md + your role logs, then a local WIP commit (not on main, no push)."
+msg="Checkpoint due: STATE.md last saved ${age} min ago. Checkpoint now (see Checkpoints in ${CLAUDE_PLUGIN_ROOT:-${CLAUDE_HOME:-$HOME/.claude}}/skills/z/README.md): update STATE.md + your role logs, then a local WIP commit (not on main, no push)."
 if [ "$event" = "Stop" ]; then
   [ "$(jq -r '.stop_hook_active // false' <<<"$input")" = "true" ] && exit 0
   echo "$msg" >&2; exit 2

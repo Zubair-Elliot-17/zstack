@@ -5,7 +5,7 @@ description: zstack stage 7. Learn from the sprint and improve the team — gsta
 
 # z-reflect
 
-**Thesis projects** (`Type: thesis` in STATE.md): follow the Reflect row and the rules in `~/.claude/skills/z/THESIS.md` instead of the steps below.
+**Thesis projects** (`Type: thesis` in STATE.md): follow the Reflect row and the rules in `${CLAUDE_PLUGIN_ROOT}/skills/z/THESIS.md` instead of the steps below.
 
 1. Run gstack `/retro` for what shipped and what slowed us down (summarise its raw metrics and the role logs with `local-llm` first); save durable project lessons with `/learn`.
 2. Ask the `researcher` to review the team against this sprint and current research, appending proposals to `~/.claude/research/team-improvements.md`.

@@ -1,0 +1,11 @@
+{
+  "name": "zstack",
+  "owner": { "name": "Zubair Elliot" },
+  "plugins": [
+    {
+      "name": "zstack",
+      "source": "./",
+      "description": "A Think → Plan → Build → Review → Test → Ship → Reflect sprint for Claude Code."
+    }
+  ]
+}
