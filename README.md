@@ -35,6 +35,56 @@ Then, inside Claude Code:
 
 ---
 
+## See it work
+
+`/zstack:z doctor` lists the optional tools it found (a snapshot from one machine; yours will differ, and nothing is required):
+
+```text
+zstack optional tools (built-in steps cover anything missing):
+  present   gstack                 /office-hours, /ship, /qa-only, /retro...
+  present   ponytail               stricter smallest-change rule
+  present   mattpocock-skills      tdd, diagnosing-bugs
+  present   ollama                 local-review, local-llm
+  present   jq                     git-readonly guard, local-llm
+  present   gh                     PR sync, ship
+  missing   playwright             z-test UI screenshots
+```
+
+Between roles, progress lives in `.claude/team/STATE.md`. An example, mid-sprint (some template fields left out):
+
+```markdown
+# Team state
+
+Last updated: 2026-11-18 14:20 by lead
+Type: code
+Autonomy: full
+Lane: sprint
+Mode: Pipeline
+Verify: npm test && npm run build
+Stage: review
+Branch / PR: feat/streaks (#4, CI green)
+Running: none
+
+## Next action
+Run /zstack:z-review on 3f2a1c9, route confirmed findings to implementer, then /zstack:z-test.
+
+## Goal
+Habit tracker with daily check-ins and streaks. Out: accounts, reminders.
+
+## Tasks
+| # | Task                  | Owner       | Status | Notes           |
+|---|-----------------------|-------------|--------|-----------------|
+| 1 | Streak model + tests  | implementer | done   | 3f2a1c9         |
+| 2 | Daily check-in screen | implementer | done   | src/CheckIn.tsx |
+
+## Decisions
+- 2026-11-18 Store streaks per user, not per habit (simpler, matches the spec)
+```
+
+When you open a new session in that project, a hook loads this file, so the lead resumes from *Next action*. Roles that were running are gone and get respawned.
+
+---
+
 ## Why
 
 Coding agents are fast but forgetful. Long tasks drift, "tests pass" gets claimed without running them, and when a session ends, its context is gone. zstack fixes this with a few simple rules:
