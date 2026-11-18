@@ -9,7 +9,7 @@ jobs:
   shell:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: ShellCheck
         run: shellcheck -S warning install.sh sync.sh hooks/*.sh scripts/*
       - name: Install smoke test (clean CLAUDE_HOME)
