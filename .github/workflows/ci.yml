@@ -1,0 +1,19 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        run: shellcheck -S warning install.sh sync.sh hooks/*.sh scripts/*
+      - name: Install into a clean CLAUDE_HOME, then check for drift
+        run: |
+          export CLAUDE_HOME="$(mktemp -d)"
+          ./install.sh
+          ./sync.sh --check
