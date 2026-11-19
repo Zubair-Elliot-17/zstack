@@ -8,7 +8,7 @@ description: zstack stage 7. Learn from the sprint and improve the team — retr
 **Thesis projects** (`Type: thesis` in STATE.md): follow the Reflect row and the rules in `${CLAUDE_PLUGIN_ROOT}/skills/z/THESIS.md` instead of the steps below.
 
 1. Follow "Retro" in `${CLAUDE_PLUGIN_ROOT}/skills/z/FALLBACKS.md` (gstack `/retro` if installed) for what shipped and what slowed us down (summarise its raw metrics and the role logs with `local-llm` first); save durable project lessons to learnings (`/learn` if gstack is installed).
-   Build it from this sprint's own data: `date`-stamped role-log entries, stage times, gate runs, fix rounds and the first stage that caught each defect; roles stamp log headers with `date`, never guess times.
+   Build it from this sprint's own data: `date`-stamped role-log entries, gate runs and fix rounds, plus stage times and the first stage that caught each defect where the logs record them; roles stamp log headers with `date`, never guess times.
 2. Ask the `researcher` to review the team against this sprint and current research, appending proposals to `~/.claude/research/team-improvements.md`.
 3. Show the user the top proposals. Apply only the ones they approve (agents, skills, zstack stages or CLAUDE.md). Skip steps 1–3 for quick-lane work (z-iterate PRs); run them once per milestone or roughly weekly.
 4. Archive the sprint: `mv .claude/team/STATE.md .claude/team/STATE-<milestone>.md`, start a fresh STATE.md from the template with `Previous sprint: STATE-<milestone>.md`, and carry over only open TODOs and live URLs. Set Next action to the next milestone's `/z-think`, or `Stage: iterate` with "waiting on user feedback" when nothing is planned.
