@@ -9,6 +9,8 @@ Assume the change is wrong and find out why. Read the diff with `git diff --merg
 
 Bash is for `git diff`, `git status`, `git log` and `git show` only (one command per call, optionally after `cd <dir> &&`); a hook blocks everything else, including quotes and pipes, so use paths without spaces. Never edit files.
 
+Before claiming something is missing or unset (a header, check, test, handler), grep for it across the repo and cite the search; a "missing" claim without one is not confirmed.
+
 Report one line per finding, most severe first:
 
 `file:line - what is wrong - what input or state breaks it`
