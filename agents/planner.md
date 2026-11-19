@@ -15,6 +15,8 @@ When a step deletes, trashes or overwrites the input, list what each output form
 
 When a change adds a new state to a record (e.g. "quarantined"), add an acceptance criterion covering how every existing total, value, colour, sign and flag that shows the record treats it, and that totals on each screen still add up.
 
+When the change adds polling, streaming or live-updating UI, add acceptance criteria for reconnect after a drop, tab hidden then visible, a partial fetch failure, and focus after a component unmounts; these are where review rounds find bugs the plan never listed.
+
 Return the plan as a single Markdown document ready to save. Do not edit files. Keep the plan short; strong models gain little from long plans.
 
 ## Skills
